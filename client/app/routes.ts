@@ -9,7 +9,7 @@ export default [
         route("/estimate", "pages/EstimatorPage.tsx"),
         route("/apply/business", "pages/BusinessApplicationPage.tsx"),
         route("/apply/individual", "pages/IndividualApplicationPage.tsx"),
-        route("/faq", "pages/FaqPage.tsx"),
+        route("/faq", "pages/FAQPage.tsx"),
         route("/contact", "pages/ContactPage.tsx"),
         route("/news", "pages/NewsPage.tsx"),
         // route("pages/NotFoundPage.tsx", "*"),
