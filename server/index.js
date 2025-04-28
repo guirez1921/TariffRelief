@@ -1,11 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors'); // Added CORS middleware
 const individualRoutes = require('./api/individual');
 const businessRoutes = require('./api/business');
 
 const app = express();
 const port = 3000;
 
+app.use(cors()); // Enable CORS
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
