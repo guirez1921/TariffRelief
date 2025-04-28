@@ -8,7 +8,7 @@ router.post('/verify', (req, res) => {
     const { step, data } = req.body;
 
     if (!step || !data) {
-        return res.status(400).json({ success: false, message: 'Invalid request data' });
+        return res.status(200).json({ success: false, message: 'Invalid request data' });
     }
 
     const errors = {};
@@ -72,11 +72,11 @@ router.post('/verify', (req, res) => {
             if (data.licenses && !(data.licenses instanceof File)) errors.licenses = 'Licenses have an invalid format';
             break;
         default:
-            return res.status(400).json({ success: false, message: 'Invalid step' });
+            return res.status(200).json({ success: false, message: 'Invalid step' });
     }
 
     if (Object.keys(errors).length > 0) {
-        return res.status(400).json({ success: false, message: 'Validation errors', errors });
+        return res.status(200).json({ success: false, message: 'Validation errors', errors });
     }
 
     res.json({ success: true, message: 'Business application step validated successfully' });
