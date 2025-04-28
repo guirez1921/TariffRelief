@@ -11,51 +11,51 @@ router.post('/verify', (req, res) => {
         return res.status(400).json({ success: false, message: 'Invalid request data' });
     }
 
-    const errors = [];
+    const errors = {};
 
     switch (step) {
         case 1: // Validate Personal Information
-            if (!data.firstName) errors.push('firstName');
-            if (!data.lastName) errors.push('lastName');
+            errors.firstName = 'FirstName is required';
+            if (!data.lastName) errors.lastName = 'Last name is required';
             if (!data.ssn) {
-                errors.push('ssn');
+                errors.ssn = 'SSN is required';
             } else if (!validateSSN(data.ssn)) {
-                errors.push('ssn (invalid format)');
+                errors.ssn = 'SSN is in an invalid format';
             }
-            if (!data.address) errors.push('address');
-            if (!data.city) errors.push('city');
-            if (!data.state) errors.push('state');
-            if (!data.zip) errors.push('zip');
-            if (!data.phone) errors.push('phone');
+            if (!data.address) errors.address = 'Address is required';
+            if (!data.city) errors.city = 'City is required';
+            if (!data.state) errors.state = 'State is required';
+            if (!data.zip) errors.zip = 'ZIP code is required';
+            if (!data.phone) errors.phone = 'Phone number is required';
             if (!data.email) {
-                errors.push('email');
+                errors.email = 'Email is required';
             } else if (!validateEmail(data.email)) {
-                errors.push('email (invalid format)');
+                errors.email = 'Email is in an invalid format';
             }
             break;
         case 2: // Validate Financial Details
-            if (!data.annualIncome) errors.push('annualIncome');
-            if (!data.assets) errors.push('assets');
-            if (!data.liabilities) errors.push('liabilities');
-            if (!data.bankName) errors.push('bankName');
-            if (!data.accountNumber) errors.push('accountNumber');
-            if (!data.routingNumber) errors.push('routingNumber');
-            if (!data.accountType) errors.push('accountType');
+            if (!data.annualIncome) errors.annualIncome = 'Annual income is required';
+            if (!data.assets) errors.assets = 'Assets are required';
+            if (!data.liabilities) errors.liabilities = 'Liabilities are required';
+            if (!data.bankName) errors.bankName = 'Bank name is required';
+            if (!data.accountNumber) errors.accountNumber = 'Account number is required';
+            if (!data.routingNumber) errors.routingNumber = 'Routing number is required';
+            if (!data.accountType) errors.accountType = 'Account type is required';
             break;
         case 3: // Validate Documentation
-            if (!data.idProof) errors.push('idProof');
-            if (!data.incomeProof) errors.push('incomeProof');
-            if (!data.tariffImpactProof) errors.push('tariffImpactProof');
+            if (!data.idProof) errors.idProof = 'ID Proof is required';
+            if (!data.incomeProof) errors.incomeProof = 'Income Proof is required';
+            if (!data.tariffImpactProof) errors.tariffImpactProof = 'Tariff Impact Proof is required';
 
-            if (data.idProof && !(data.idProof instanceof File)) errors.push('idProof (invalid format)');
-            if (data.incomeProof && !(data.incomeProof instanceof File)) errors.push('incomeProof (invalid format)');
-            if (data.tariffImpactProof && !(data.tariffImpactProof instanceof File)) errors.push('tariffImpactProof (invalid format)');
+            if (data.idProof && !(data.idProof instanceof File)) errors.idProof = 'ID Proof is in an invalid format';
+            if (data.incomeProof && !(data.incomeProof instanceof File)) errors.incomeProof = 'Income Proof is in an invalid format';
+            if (data.tariffImpactProof && !(data.tariffImpactProof instanceof File)) errors.tariffImpactProof = 'Tariff Impact Proof is in an invalid format';
             break;
         default:
             return res.status(400).json({ success: false, message: 'Invalid step' });
     }
 
-    if (errors.length > 0) {
+    if (Object.keys(errors).length > 0) {
         return res.status(400).json({ success: false, message: 'Validation errors', errors });
     }
 
