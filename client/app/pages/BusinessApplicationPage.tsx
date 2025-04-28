@@ -157,10 +157,6 @@ export default function ApplicationPage() {
       const response = await axios.post('https://tariff-relief-server.vercel.app/api/business/verify', {
         step: step,
         data: stepData,
-      }, {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        },
       });
 
       if (response.data.success) {
@@ -186,10 +182,6 @@ export default function ApplicationPage() {
       const response = await axios.post('https://tariff-relief-server.vercel.app/api/business/submit', {
         formData: formData,
         files: files,
-      }, {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        },
       });
 
       if (response.data.success) {
