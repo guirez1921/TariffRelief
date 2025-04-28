@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { CheckCircleIcon, AlertCircleIcon, ChevronRightIcon, PhoneIcon, MailIcon } from 'lucide-react';
 import Button from '~/components/ui/Button';
 import VideoModal from '~/components/ui/VideoModal';
@@ -6,6 +7,7 @@ import VideoModal from '~/components/ui/VideoModal';
 export default function IndividualApplicationPage() {
     const [step, setStep] = useState(1);
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false); // Loader state
 
     const state = [
         { key: 'AL', name: 'Alabama' },
@@ -107,27 +109,28 @@ export default function IndividualApplicationPage() {
 
     const handleNextStep = async () => {
         try {
+            setLoading(true); // Start loader
             const stepData = step === 1
                 ? { firstName: formData.firstName, lastName: formData.lastName, ssn: formData.ssn, address: formData.address, city: formData.city, state: formData.state, zip: formData.zip, phone: formData.phone, email: formData.email }
                 : step === 2
                     ? { annualIncome: formData.annualIncome, assets: formData.assets, liabilities: formData.liabilities, bankName: formData.bankName, accountNumber: formData.accountNumber, routingNumber: formData.routingNumber, accountType: formData.accountType }
                     : files;
 
-            const response = await fetch('https://tariff-relief-server.vercel.app/api/individual/verify', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ step, data: stepData }),
+            const response = await axios.post('https://tariff-relief-server.vercel.app/api/individual/verify', {
+                step,
+                data: stepData,
             });
 
-            const result = await response.json();
-            if (result.success) {
+            if (response.data.success) {
                 setStep(prev => prev + 1);
             } else {
-                alert(result.message);
+                alert(response.data.message);
             }
         } catch (error) {
             console.error('Error submitting step:', error);
             alert('An error occurred while submitting the step. Please try again.');
+        } finally {
+            setLoading(false); // Stop loader
         }
     };
 
@@ -135,21 +138,22 @@ export default function IndividualApplicationPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await fetch('https://tariff-relief-server.vercel.app/api/individual/submit', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ step: 4, data: { formData, files } }),
+            setLoading(true); // Start loader
+            const response = await axios.post('https://tariff-relief-server.vercel.app/api/individual/submit', {
+                step: 4,
+                data: { formData, files },
             });
 
-            const result = await response.json();
-            if (result.success) {
+            if (response.data.success) {
                 setFormSubmitted(true);
             } else {
-                alert(result.message);
+                alert(response.data.message);
             }
         } catch (error) {
             console.error('Error submitting application:', error);
             alert('An error occurred while submitting the application. Please try again.');
+        } finally {
+            setLoading(false); // Stop loader
         }
     };
 
@@ -358,6 +362,10 @@ export default function IndividualApplicationPage() {
 
     return (
         <div className="w-full">
+            {/* Loader */}
+            {loading && <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="loader border-t-4 border-blue-500 rounded-full w-12 h-12 animate-spin"></div>
+            </div>}
             {/* Header */}
             <section className="bg-navy-700 text-white py-12">
                 <div className="container mx-auto px-4">
