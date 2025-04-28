@@ -117,7 +117,7 @@ export default function IndividualApplicationPage() {
                     : files;
 
             const response = await axios.post('https://tariff-relief-server.vercel.app/api/individual/verify', {
-                step,
+                step: step,
                 data: stepData,
             }, {
                 headers: {
@@ -144,8 +144,8 @@ export default function IndividualApplicationPage() {
         try {
             setLoading(true); // Start loader
             const response = await axios.post('https://tariff-relief-server.vercel.app/api/individual/submit', {
-                step: 4,
-                data: { formData, files },
+                formData: formData,
+                files: files
             }, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
