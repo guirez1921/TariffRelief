@@ -8,6 +8,7 @@ export default function IndividualApplicationPage() {
     const [step, setStep] = useState(1);
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [loading, setLoading] = useState(false); // Loader state
+    const [error, setError] = useState<Partial<Record<string, string>> | null>(null); // Error state
 
     const state = [
         { key: 'AL', name: 'Alabama' },
@@ -121,10 +122,12 @@ export default function IndividualApplicationPage() {
                 data: stepData,
             });
 
-            if (response.data.success) {
+            if (response.data.success) { 
                 setStep(prev => prev + 1);
+                console.log(response.data.message, response.data.errors);
             } else {
-                alert(response.data.message);
+                setError(response.data.errors);
+                console.log(response.data.message, response.data.errors);
             }
         } catch (error) {
             console.error('Error submitting step:', error);
@@ -183,24 +186,44 @@ export default function IndividualApplicationPage() {
                                 <div>
                                     <label htmlFor="firstName" className="block font-medium mb-1">First Name *</label>
                                     <input type="text" id="firstName" value={formData.firstName} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                    {error?.firstName && <p className="text-red-500 text-sm mt-1">{error.firstName}</p>}
                                 </div>
                                 <div>
                                     <label htmlFor="lastName" className="block font-medium mb-1">Last Name *</label>
                                     <input type="text" id="lastName" value={formData.lastName} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                    {error?.lastName && <p className="text-red-500 text-sm mt-1">{error.lastName}</p>}
                                 </div>
                             </div>
                             <div>
                                 <label htmlFor="ssn" className="block font-medium mb-1">Social Security Number (SSN) *</label>
-                                <input type="text" id="ssn" value={formData.ssn} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                <input
+                                    type="text"
+                                    id="ssn"
+                                    value={formData.ssn}
+                                    onChange={(e) => {
+                                        let value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                                        if (value.length > 3 && value.length <= 5) {
+                                            value = value.slice(0, 3) + '-' + value.slice(3);
+                                        } else if (value.length > 5) {
+                                            value = value.slice(0, 3) + '-' + value.slice(3, 5) + '-' + value.slice(5, 9);
+                                        }
+                                        setFormData((prev) => ({ ...prev, ssn: value }));
+                                    }}
+                                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    required
+                                />
+                                {error?.ssn && <p className="text-red-500 text-sm mt-1">{error.ssn}</p>}
                             </div>
                             <div>
                                 <label htmlFor="address" className="block font-medium mb-1">Address *</label>
                                 <input type="text" id="address" value={formData.address} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                {error?.address && <p className="text-red-500 text-sm mt-1">{error.address}</p>}
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div>
                                     <label htmlFor="city" className="block font-medium mb-1">City *</label>
                                     <input type="text" id="city" value={formData.city} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                    {error?.city && <p className="text-red-500 text-sm mt-1">{error.city}</p>}
                                 </div>
                                 <div>
                                     <label htmlFor="state" className="block font-medium mb-1">State *</label>
@@ -210,29 +233,61 @@ export default function IndividualApplicationPage() {
                                             <option key={key} value={key}>{name}</option>
                                         ))}
                                     </select>
+                                    {error?.state && <p className="text-red-500 text-sm mt-1">{error.state}</p>}
                                 </div>
                                 <div>
                                     <label htmlFor="zip" className="block font-medium mb-1">ZIP Code *</label>
-                                    <input type="text" id="zip" value={formData.zip} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                    <input
+                                        type="text"
+                                        id="zip"
+                                        value={formData.zip}
+                                        onChange={(e) => {
+                                            let value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                                            if (value.length > 5) {
+                                                value = value.slice(0, 5) + '-' + value.slice(5, 9);
+                                            }
+                                            setFormData((prev) => ({ ...prev, zip: value }));
+                                        }}
+                                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        required
+                                    />
+                                    {error?.zip && <p className="text-red-500 text-sm mt-1">{error.zip}</p>}
                                 </div>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label htmlFor="phone" className="block font-medium mb-1">Phone *</label>
                                     <div className="relative">
-                                        <input type="tel" id="phone" value={formData.phone} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                        <input
+                                            type="tel"
+                                            id="phone"
+                                            value={formData.phone}
+                                            onChange={(e) => {
+                                                let value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                                                if (value.length > 3 && value.length <= 6) {
+                                                    value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+                                                } else if (value.length > 6) {
+                                                    value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
+                                                }
+                                                setFormData((prev) => ({ ...prev, phone: value }));
+                                            }}
+                                            className="w-full border border-gray-300 rounded-md px-3 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            required
+                                        />
                                         <span className="absolute inset-y-0 left-3 flex items-center text-gray-500">+1</span>
                                     </div>
+                                    {error?.phone && <p className="text-red-500 text-sm mt-1">{error.phone}</p>}
                                 </div>
                                 <div>
                                     <label htmlFor="email" className="block font-medium mb-1">Email *</label>
                                     <input type="email" id="email" value={formData.email} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                    {error?.email && <p className="text-red-500 text-sm mt-1">{error.email}</p>}
                                 </div>
                             </div>
                         </div>
                         <div className="mt-8 flex justify-end">
-                            <Button onClick={handleNextStep} variant="primary">
-                                Next: Financial Details <ChevronRightIcon size={16} className="ml-1" />
+                            <Button onClick={handleNextStep} variant="primary" disabled={loading} type='button'>
+                                {loading ? 'Loading...' : 'Next: Financial Details'} <ChevronRightIcon size={16} className="ml-1" />
                             </Button>
                         </div>
                     </>
@@ -245,27 +300,33 @@ export default function IndividualApplicationPage() {
                             <div>
                                 <label htmlFor="annualIncome" className="block font-medium mb-1">Annual Income *</label>
                                 <input type="number" id="annualIncome" value={formData.annualIncome} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                {error?.annualIncome && <p className="text-red-500 text-sm mt-1">{error.annualIncome}</p>}
                             </div>
                             <div>
                                 <label htmlFor="assets" className="block font-medium mb-1">Total Assets (Estimated) *</label>
                                 <input type="number" id="assets" value={formData.assets} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                {error?.assets && <p className="text-red-500 text-sm mt-1">{error.assets}</p>}
                             </div>
                             <div>
                                 <label htmlFor="liabilities" className="block font-medium mb-1">Total Liabilities (Estimated) *</label>
                                 <input type="number" id="liabilities" value={formData.liabilities} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                {error?.liabilities && <p className="text-red-500 text-sm mt-1">{error.liabilities}</p>}
                             </div>
                             <div>
                                 <label htmlFor="bankName" className="block font-medium mb-1">Bank Name *</label>
                                 <input type="text" id="bankName" value={formData.bankName} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                {error?.bankName && <p className="text-red-500 text-sm mt-1">{error.bankName}</p>}
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label htmlFor="accountNumber" className="block font-medium mb-1">Account Number *</label>
                                     <input type="text" id="accountNumber" value={formData.accountNumber} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                    {error?.accountNumber && <p className="text-red-500 text-sm mt-1">{error.accountNumber}</p>}
                                 </div>
                                 <div>
                                     <label htmlFor="routingNumber" className="block font-medium mb-1">Routing Number *</label>
                                     <input type="text" id="routingNumber" value={formData.routingNumber} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                    {error?.routingNumber && <p className="text-red-500 text-sm mt-1">{error.routingNumber}</p>}
                                 </div>
                             </div>
                             <div>
@@ -275,12 +336,13 @@ export default function IndividualApplicationPage() {
                                     <option value="checking">Checking</option>
                                     <option value="savings">Savings</option>
                                 </select>
+                                {error?.accountType && <p className="text-red-500 text-sm mt-1">{error.accountType}</p>}
                             </div>
                         </div>
                         <div className="mt-8 flex justify-between">
-                            <Button onClick={handlePrevStep} variant="outline">Previous</Button>
-                            <Button onClick={handleNextStep} variant="primary">
-                                Next: Documentation <ChevronRightIcon size={16} className="ml-1" />
+                            <Button onClick={handlePrevStep} variant="outline" disabled={loading} type='button'>Previous</Button>
+                            <Button onClick={handleNextStep} variant="primary" disabled={loading} type='button'>
+                                {loading ? 'Loading...' : 'Next: Required Documentation'} <ChevronRightIcon size={16} className="ml-1" />
                             </Button>
                         </div>
                     </>
@@ -302,20 +364,23 @@ export default function IndividualApplicationPage() {
                             <div>
                                 <label htmlFor="idProof" className="block font-medium mb-1">Government ID Proof *</label>
                                 <input type="file" id="idProof" onChange={handleFileChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                {error?.idProof && <p className="text-red-500 text-sm mt-1">{error.idProof}</p>}
                             </div>
                             <div>
                                 <label htmlFor="incomeProof" className="block font-medium mb-1">Proof of Income *</label>
                                 <input type="file" id="incomeProof" onChange={handleFileChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                {error?.incomeProof && <p className="text-red-500 text-sm mt-1">{error.incomeProof}</p>}
                             </div>
                             <div>
                                 <label htmlFor="tariffImpactProof" className="block font-medium mb-1">Proof of Tariff Impact *</label>
                                 <input type="file" id="tariffImpactProof" onChange={handleFileChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                {error?.tariffImpactProof && <p className="text-red-500 text-sm mt-1">{error.tariffImpactProof}</p>}
                             </div>
                         </div>
                         <div className="mt-8 flex justify-between">
-                            <Button onClick={handlePrevStep} variant="outline">Previous</Button>
-                            <Button onClick={handleNextStep} variant="primary">
-                                Next: Review & Submit <ChevronRightIcon size={16} className="ml-1" />
+                            <Button onClick={handlePrevStep} variant="outline" disabled={loading} type='button'>Previous</Button>
+                            <Button onClick={handleNextStep} variant="primary" disabled={loading} type='button'>
+                                {loading ? 'Loading...' : 'Next: Review & Submit'} <ChevronRightIcon size={16} className="ml-1" />
                             </Button>
                         </div>
                     </>
@@ -350,7 +415,7 @@ export default function IndividualApplicationPage() {
                             </ul>
                         </div>
                         <div className="mt-8 flex justify-between">
-                            <Button onClick={handlePrevStep} variant="outline">Previous</Button>
+                            <Button onClick={handlePrevStep} variant="outline" disabled={loading} type='button'>Previous</Button>
                             <Button onClick={handleSubmit} variant="secondary">Submit Application</Button>
                         </div>
                     </>
@@ -362,10 +427,7 @@ export default function IndividualApplicationPage() {
 
     return (
         <div className="w-full">
-            {/* Loader */}
-            {loading && <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                <div className="loader border-t-4 border-blue-500 rounded-full w-12 h-12 animate-spin"></div>
-            </div>}
+
             {/* Header */}
             <section className="bg-navy-700 text-white py-12">
                 <div className="container mx-auto px-4">
@@ -403,7 +465,11 @@ export default function IndividualApplicationPage() {
             {/* Application Form */}
             <section className="py-12 bg-gray-50">
                 <div className="container mx-auto px-4">
-                    <div className="max-w-4xl mx-auto">
+                    <div className="max-w-4xl mx-auto relative">
+                        {/* Loader */}
+                        {loading && <div className="absolute inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center rounded-lg z-50">
+                            <div className="loader border-t-4 border-blue-500 rounded-full w-12 h-12 animate-spin"></div>
+                        </div>}
                         <div className="bg-white p-8 rounded-lg shadow-md">
                             <form>{renderStepContent()}</form>
                         </div>

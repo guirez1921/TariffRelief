@@ -3,6 +3,7 @@ const router = express.Router();
 
 const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 const validateSSN = (ssn) => /^\d{3}-\d{2}-\d{4}$/.test(ssn);
+const validateZIP = (zip) => /^\d{5}(-\d{4})?$/.test(zip);
 
 router.post('/verify', (req, res) => {
     const { step, data } = req.body;
@@ -15,7 +16,7 @@ router.post('/verify', (req, res) => {
 
     switch (step) {
         case 1: // Validate Personal Information
-            errors.firstName = 'FirstName is required';
+            if (!data.firstName) errors.firstName = 'FirstName is required';
             if (!data.lastName) errors.lastName = 'Last name is required';
             if (!data.ssn) {
                 errors.ssn = 'SSN is required';
@@ -25,7 +26,11 @@ router.post('/verify', (req, res) => {
             if (!data.address) errors.address = 'Address is required';
             if (!data.city) errors.city = 'City is required';
             if (!data.state) errors.state = 'State is required';
-            if (!data.zip) errors.zip = 'ZIP code is required';
+            if (!data.zip) {
+                errors.zip = 'ZIP code is required';
+            } else if (!validateZIP(data.zip)) {
+                errors.zip = 'ZIP code is in an invalid format';
+            }
             if (!data.phone) errors.phone = 'Phone number is required';
             if (!data.email) {
                 errors.email = 'Email is required';
@@ -47,9 +52,9 @@ router.post('/verify', (req, res) => {
             if (!data.incomeProof) errors.incomeProof = 'Income Proof is required';
             if (!data.tariffImpactProof) errors.tariffImpactProof = 'Tariff Impact Proof is required';
 
-            if (data.idProof && !(data.idProof instanceof File)) errors.idProof = 'ID Proof is in an invalid format';
-            if (data.incomeProof && !(data.incomeProof instanceof File)) errors.incomeProof = 'Income Proof is in an invalid format';
-            if (data.tariffImpactProof && !(data.tariffImpactProof instanceof File)) errors.tariffImpactProof = 'Tariff Impact Proof is in an invalid format';
+            if (data.idProof && (!data.idProof.name.endsWith('.pdf'))) errors.idProof = 'ID Proof must be in PDF format';
+            if (data.incomeProof && (!data.incomeProof.name.endsWith('.pdf'))) errors.incomeProof = 'Income Proof must be in PDF format';
+            if (data.tariffImpactProof && (!data.tariffImpactProof.name.endsWith('.pdf'))) errors.tariffImpactProof = 'Tariff Impact Proof must be in PDF format';
             break;
         default:
             return res.status(200).json({ success: false, message: 'Invalid step' });

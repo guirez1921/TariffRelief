@@ -7,6 +7,7 @@ export default function ApplicationPage() {
   const [step, setStep] = useState(1);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [loading, setLoading] = useState(false); // Loader state
+  const [error, setError] = useState<Partial<Record<string, string>> | null>(null); // Error state
   const state = [
     { key: 'AL', name: 'Alabama' },
     { key: 'AK', name: 'Alaska' },
@@ -161,12 +162,14 @@ export default function ApplicationPage() {
 
       if (response.data.success) {
         setStep(prev => prev + 1);
+        console.log(response.data.message, response.data.errors);
       } else {
-        alert(response.data.message);
+        setError(response.data.errors);
+        console.log(response.data.message, response.data.errors);
       }
     } catch (error) {
       console.error('Error submitting step:', error);
-      alert('An error occurred while submitting the step. Please try again.');
+      console.log('An error occurred while submitting the step. Please try again.');
     } finally {
       setLoading(false); // Stop loader
     }
@@ -264,12 +267,14 @@ export default function ApplicationPage() {
                     Legal Business Name *
                   </label>
                   <input type="text" id="businessName" value={formData.businessName} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                  {error?.businessName && <p className="text-red-500 text-sm mt-1">{error.businessName}</p>}
                 </div>
                 <div>
                   <label htmlFor="dba" className="block font-medium mb-1">
                     DBA (if applicable)
                   </label>
                   <input type="text" id="dba" value={formData.dba} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  {error?.dba && <p className="text-red-500 text-sm mt-1">{error.dba}</p>}
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -277,7 +282,22 @@ export default function ApplicationPage() {
                   <label htmlFor="ein" className="block font-medium mb-1">
                     EIN/Tax ID *
                   </label>
-                  <input type="text" id="ein" value={formData.ein} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                  <input
+                    type="text"
+                    id="ein"
+                    value={formData.ein}
+                    onChange={(event) => {
+                      const { value } = event.target;
+                      const formattedValue = value.replace(/[^0-9]/g, '').replace(/(\d{2})(\d{1,7})/, '$1-$2');
+                      setFormData((prevFormData) => ({
+                        ...prevFormData,
+                        ein: formattedValue,
+                      }));
+                    }}
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                  {error?.ein && <p className="text-red-500 text-sm mt-1">{error.ein}</p>}
                 </div>
                 <div>
                   <label htmlFor="businessType" className="block font-medium mb-1">
@@ -294,6 +314,7 @@ export default function ApplicationPage() {
                     <option value="s_corporation">S Corporation</option>
                     <option value="non_profit">Non-Profit</option>
                   </select>
+                  {error?.businessType && <p className="text-red-500 text-sm mt-1">{error.businessType}</p>}
                 </div>
               </div>
               <div>
@@ -301,6 +322,7 @@ export default function ApplicationPage() {
                   Business Address *
                 </label>
                 <input type="text" id="businessAddress" value={formData.businessAddress} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                {error?.businessAddress && <p className="text-red-500 text-sm mt-1">{error.businessAddress}</p>}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
@@ -308,6 +330,7 @@ export default function ApplicationPage() {
                     City *
                   </label>
                   <input type="text" id="city" value={formData.city} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                  {error?.city && <p className="text-red-500 text-sm mt-1">{error.city}</p>}
                 </div>
                 <div>
                   <label htmlFor="state" className="block font-medium mb-1">
@@ -321,12 +344,28 @@ export default function ApplicationPage() {
                       </option>
                     ))}
                   </select>
+                  {error?.state && <p className="text-red-500 text-sm mt-1">{error.state}</p>}
                 </div>
                 <div>
                   <label htmlFor="zip" className="block font-medium mb-1">
                     ZIP Code *
                   </label>
-                  <input type="text" id="zip" value={formData.zip} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                  <input
+                    type="text"
+                    id="zip"
+                    value={formData.zip}
+                    onChange={(event) => {
+                      const { value } = event.target;
+                      const formattedValue = value.replace(/[^0-9]/g, '').replace(/(\d{5})(\d{1,4})?/, '$1-$2').trim();
+                      setFormData((prevFormData) => ({
+                        ...prevFormData,
+                        zip: formattedValue,
+                      }));
+                    }}
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                  {error?.zip && <p className="text-red-500 text-sm mt-1">{error.zip}</p>}
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -340,36 +379,50 @@ export default function ApplicationPage() {
                       type="tel"
                       id="phone"
                       value={formData.phone}
-                      onChange={handleInputChange}
+                      onChange={(event) => {
+                        const { value } = event.target;
+                        const formattedValue = value
+                          .replace(/[^0-9]/g, '') // Remove non-numeric characters
+                          .replace(/(\d{3})(\d{1,3})?(\d{1,4})?/, '($1) $2-$3') // Format as (XXX) XXX-XXXX
+                          .trim();
+                        setFormData((prevFormData) => ({
+                          ...prevFormData,
+                          phone: formattedValue,
+                        }));
+                      }}
                       className="w-full border border-gray-300 rounded-md px-3 py-2 pl-8 focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                     />
+                    {error?.phone && <p className="text-red-500 text-sm mt-1">{error.phone}</p>}
                   </div>
                 </div>
-                <div>
-                  <label htmlFor="email" className="block font-medium mb-1">
-                    Business Email *
-                  </label>
-                  <input type="email" id="email" value={formData.email} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-                </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="yearsInBusiness" className="block font-medium mb-1">
-                    Years in Business *
-                  </label>
-                  <input type="number" id="yearsInBusiness" value={formData.yearsInBusiness} onChange={handleInputChange} min="2" className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-                </div>
-                <div>
-                  <label htmlFor="employees" className="block font-medium mb-1">
-                    Number of Employees *
-                  </label>
-                  <input type="number" id="employees" value={formData.employees} onChange={handleInputChange} min="1" max="500" className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-                </div>
+              <div>
+                <label htmlFor="email" className="block font-medium mb-1">
+                  Business Email *
+                </label>
+                <input type="email" id="email" value={formData.email} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                {error?.email && <p className="text-red-500 text-sm mt-1">{error.email}</p>}
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="yearsInBusiness" className="block font-medium mb-1">
+                  Years in Business *
+                </label>
+                <input type="number" id="yearsInBusiness" value={formData.yearsInBusiness} onChange={handleInputChange} min="2" className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                {error?.yearsInBusiness && <p className="text-red-500 text-sm mt-1">{error.yearsInBusiness}</p>}
+              </div>
+              <div>
+                <label htmlFor="employees" className="block font-medium mb-1">
+                  Number of Employees *
+                </label>
+                <input type="number" id="employees" value={formData.employees} onChange={handleInputChange} min="1" max="500" className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                {error?.employees && <p className="text-red-500 text-sm mt-1">{error.employees}</p>}
               </div>
             </div>
             <div className="mt-8 flex justify-end">
-              <Button onClick={handleNextStep} variant="primary">
+              <Button onClick={handleNextStep} variant="primary" type="button" disabled={loading}>
                 Next: Tariff Impact{' '}
                 <ChevronRightIcon size={16} className="ml-1" />
               </Button>
@@ -398,6 +451,7 @@ export default function ApplicationPage() {
                   <option value="services">Services</option>
                   <option value="other">Other</option>
                 </select>
+                {error?.industryType && <p className="text-red-500 text-sm mt-1">{error.industryType}</p>}
               </div>
               <div>
                 <label htmlFor="impactDescription" className="block font-medium mb-1">
@@ -405,6 +459,7 @@ export default function ApplicationPage() {
                   business *
                 </label>
                 <textarea id="impactDescription" rows={4} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                {error?.impactDescription && <p className="text-red-500 text-sm mt-1">{error.impactDescription}</p>}
               </div>
               <div>
                 <label className="block font-medium mb-1">
@@ -417,6 +472,7 @@ export default function ApplicationPage() {
                     <label htmlFor={`impact-${index}`}>{option}</label>
                   </div>)}
                 </div>
+                {error?.impactAspects && <p className="text-red-500 text-sm mt-1">{error.impactAspects}</p>}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -426,6 +482,7 @@ export default function ApplicationPage() {
                   <div className="relative">
                     <span className="absolute left-3 top-2">$</span>
                     <input type="number" id="estimatedImpact" value={formData.estimatedImpact} onChange={handleInputChange} min="0" className="w-full border border-gray-300 rounded-md px-3 py-2 pl-8 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                    {error?.estimatedImpact && <p className="text-red-500 text-sm mt-1">{error.estimatedImpact}</p>}
                   </div>
                 </div>
                 <div>
@@ -435,6 +492,7 @@ export default function ApplicationPage() {
                   <div className="relative">
                     <input type="number" id="impactPercentage" value={formData.impactPercentage} onChange={handleInputChange} min="0" max="100" className="w-full border border-gray-300 rounded-md px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
                     <span className="absolute right-3 top-2">%</span>
+                    {error?.impactPercentage && <p className="text-red-500 text-sm mt-1">{error.impactPercentage}</p>}
                   </div>
                 </div>
               </div>
@@ -443,13 +501,14 @@ export default function ApplicationPage() {
                   Describe any steps already taken to mitigate tariff impacts *
                 </label>
                 <textarea id="mitigationEfforts" rows={3} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                {error?.mitigationEfforts && <p className="text-red-500 text-sm mt-1">{error.mitigationEfforts}</p>}
               </div>
             </div>
             <div className="mt-8 flex justify-between">
-              <Button onClick={handlePrevStep} variant="outline">
+              <Button onClick={handlePrevStep} variant="outline" type="button" disabled={loading}>
                 Previous
               </Button>
-              <Button onClick={handleNextStep} variant="primary">
+              <Button onClick={handleNextStep} variant="primary" type="button" disabled={loading}>
                 Next: Grant Request{' '}
                 <ChevronRightIcon size={16} className="ml-1" />
               </Button>
@@ -468,6 +527,7 @@ export default function ApplicationPage() {
                 <div className="relative">
                   <span className="absolute left-3 top-2">$</span>
                   <input type="number" id="fundAmount" min="50000" max="2000000" className="w-full border border-gray-300 rounded-md px-3 py-2 pl-8 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                  {error?.fundAmount && <p className="text-red-500 text-sm mt-1">{error.fundAmount}</p>}
                 </div>
                 <p className="text-sm text-gray-500 mt-1">
                   Funding range from $50,000 to $2,000,000
@@ -490,12 +550,14 @@ export default function ApplicationPage() {
                   <option value="research">Research and Development</option>
                   <option value="other">Other</option>
                 </select>
+                {error?.fundPurpose && <p className="text-red-500 text-sm mt-1">{error.fundPurpose}</p>}
               </div>
               <div>
                 <label htmlFor="fundUse" className="block font-medium mb-1">
                   Detailed Explanation of How Funds Will Be Used *
                 </label>
                 <textarea id="fundUse" rows={4} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                {error?.fundUse && <p className="text-red-500 text-sm mt-1">{error.fundUse}</p>}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -509,12 +571,14 @@ export default function ApplicationPage() {
                     <option value="10">10 years</option>
                     <option value="15">15 years</option>
                   </select>
+                  {error?.preferredTerm && <p className="text-red-500 text-sm mt-1">{error.preferredTerm}</p>}
                 </div>
                 <div>
                   <label htmlFor="collateral" className="block font-medium mb-1">
                     Available Collateral
                   </label>
                   <input type="text" id="collateral" className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  {error?.collateral && <p className="text-red-500 text-sm mt-1">{error.collateral}</p>}
                 </div>
               </div>
               <div>
@@ -522,13 +586,14 @@ export default function ApplicationPage() {
                   Expected Outcomes from Grant Funding *
                 </label>
                 <textarea id="expectedOutcomes" rows={3} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                {error?.expectedOutcomes && <p className="text-red-500 text-sm mt-1">{error.expectedOutcomes}</p>}
               </div>
             </div>
             <div className="mt-8 flex justify-between">
-              <Button onClick={handlePrevStep} variant="outline">
+              <Button onClick={handlePrevStep} variant="outline" type="button" disabled={loading}>
                 Previous
               </Button>
-              <Button onClick={handleNextStep} variant="primary">
+              <Button onClick={handleNextStep} variant="primary" type="button" disabled={loading}>
                 Next: Financial Details{' '}
                 <ChevronRightIcon size={16} className="ml-1" />
               </Button>
@@ -552,6 +617,7 @@ export default function ApplicationPage() {
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
+                {error?.bankName && <p className="text-red-500 text-sm mt-1">{error.bankName}</p>}
               </div>
               <div>
                 <label htmlFor="accountNumber" className="block font-medium mb-1">
@@ -565,6 +631,7 @@ export default function ApplicationPage() {
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
+                {error?.accountNumber && <p className="text-red-500 text-sm mt-1">{error.accountNumber}</p>}
               </div>
               <div>
                 <label htmlFor="routingNumber" className="block font-medium mb-1">
@@ -578,6 +645,7 @@ export default function ApplicationPage() {
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
+                {error?.routingNumber && <p className="text-red-500 text-sm mt-1">{error.routingNumber}</p>}
               </div>
               <div>
                 <label htmlFor="accountType" className="block font-medium mb-1">
@@ -594,13 +662,14 @@ export default function ApplicationPage() {
                   <option value="checking">Checking</option>
                   <option value="savings">Savings</option>
                 </select>
+                {error?.accountType && <p className="text-red-500 text-sm mt-1">{error.accountType}</p>}
               </div>
             </div>
             <div className="mt-8 flex justify-between">
-              <Button onClick={handlePrevStep} variant="outline">
+              <Button onClick={handlePrevStep} variant="outline" type="button" disabled={loading}>
                 Previous
               </Button>
-              <Button onClick={handleNextStep} variant="primary">
+              <Button onClick={handleNextStep} variant="primary" type="button" disabled={loading}>
                 Next: Documentation{' '}
                 <ChevronRightIcon size={16} className="ml-1" />
               </Button>
@@ -629,6 +698,7 @@ export default function ApplicationPage() {
                 <p className="text-sm text-gray-500 mt-1">
                   Upload complete business tax returns, including all schedules.
                 </p>
+                {error?.taxReturns && <p className="text-red-500 text-sm mt-1">{error.taxReturns}</p>}
               </div>
               <div>
                 <label htmlFor="financialStatements" className="block font-medium mb-1">
@@ -639,6 +709,7 @@ export default function ApplicationPage() {
                   Include balance sheet and profit & loss statement for the
                   current year.
                 </p>
+                {error?.financialStatements && <p className="text-red-500 text-sm mt-1">{error.financialStatements}</p>}
               </div>
               <div>
                 <label htmlFor="tariffImpact" className="block font-medium mb-1">
@@ -649,6 +720,7 @@ export default function ApplicationPage() {
                   Upload import records, supplier communications, or other
                   documentation showing tariff impact.
                 </p>
+                {error?.tariffImpact && <p className="text-red-500 text-sm mt-1">{error.tariffImpact}</p>}
               </div>
               <div>
                 <label htmlFor="businessPlan" className="block font-medium mb-1">
@@ -659,6 +731,7 @@ export default function ApplicationPage() {
                   Detailed plan explaining how grant funds will be used to
                   address tariff impacts.
                 </p>
+                {error?.businessPlan && <p className="text-red-500 text-sm mt-1">{error.businessPlan}</p>}
               </div>
               <div>
                 <label htmlFor="ownerInfo" className="block font-medium mb-1">
@@ -669,6 +742,7 @@ export default function ApplicationPage() {
                   Personal financial statements for all owners with 20% or
                   greater ownership.
                 </p>
+                {error?.ownerInfo && <p className="text-red-500 text-sm mt-1">{error.ownerInfo}</p>}
               </div>
               <div>
                 <label htmlFor="licenses" className="block font-medium mb-1">
@@ -679,13 +753,14 @@ export default function ApplicationPage() {
                   Current business licenses, permits, and registration
                   documents.
                 </p>
+                {error?.licenses && <p className="text-red-500 text-sm mt-1">{error.licenses}</p>}
               </div>
             </div>
             <div className="mt-8 flex justify-between">
-              <Button onClick={handlePrevStep} variant="outline">
+              <Button onClick={handlePrevStep} variant="outline" type="button" disabled={loading}>
                 Previous
               </Button>
-              <Button onClick={handleNextStep} variant="primary">
+              <Button onClick={handleNextStep} variant="primary" type="button" disabled={loading}>
                 Next: Review & Submit{' '}
                 <ChevronRightIcon size={16} className="ml-1" />
               </Button>
@@ -790,7 +865,7 @@ export default function ApplicationPage() {
               </div>
             </div>
             <div className="mt-8 flex justify-between">
-              <Button onClick={handlePrevStep} variant="outline">
+              <Button onClick={handlePrevStep} variant="outline" type="button" disabled={loading}>
                 Previous
               </Button>
               <Button onClick={handleSubmit} variant="secondary">
@@ -805,10 +880,6 @@ export default function ApplicationPage() {
   };
   return (
     <div className="w-full">
-      {/* Loader */}
-      {loading && <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="loader border-t-4 border-blue-500 rounded-full w-12 h-12 animate-spin"></div>
-      </div>}
       {/* Header */}
       <section className="bg-navy-700 text-white py-12">
         <div className="container mx-auto px-4">
@@ -853,7 +924,11 @@ export default function ApplicationPage() {
       {/* Application Form */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-4xl mx-auto relative">
+            {/* Loader */}
+            {loading && <div className="absolute inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center rounded-lg z-50">
+              <div className="loader border-t-4 border-blue-500 rounded-full w-12 h-12 animate-spin"></div>
+            </div>}
             <div className="bg-white p-8 rounded-lg shadow-md">
               <form>{renderStepContent()}</form>
             </div>
