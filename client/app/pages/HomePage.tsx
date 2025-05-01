@@ -5,8 +5,16 @@ import type { Route } from '../+types/root';
 
 export function meta({ }: Route.MetaArgs) {
   return [
-    { title: "SME Federal Grants" },
-    { name: "description", content: "Explore federal grants for small businesses!" },
+    { title: "SME Tariff Relief Application" },
+    { name: "description", content: "Apply for the SME Tariff Relief Program to mitigate the impact of tariffs on your business." },
+    { name: "keywords", content: "SME, Tariff Relief, Grants, Small Business, Federal Program" },
+    { name: "author", content: "SME Tariff Relief Program" },
+    { name: "viewport", content: "width=device-width, initial-scale=1" },
+    { property: "og:title", content: "SME Tariff Relief Application" },
+    { property: "og:description", content: "Apply for the SME Tariff Relief Program to mitigate the impact of tariffs on your business." },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: "https://tariff-relief.gov/" },
+    { property: "og:image", content: "https://tariff-relief.gov/assets/og-image.jpg" },
   ];
 }
 
@@ -25,7 +33,7 @@ export default function HomePage() {
                 Federal grants to help businesses and individuals adapt to the economic impact of upcoming Chinese tariffs.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button href="/apply/business" size="lg" variant="white">
+                <Button href="/application/business" size="lg" variant="white">
                   Apply for SME Grant{' '}
                   <ArrowRightIcon className="ml-2" size={20} />
                 </Button>
@@ -128,7 +136,7 @@ export default function HomePage() {
         your business or individual needs to grow and succeed.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-        <Button href="/apply/business" size="lg" variant="secondary">
+        <Button href="/application/business" size="lg" variant="secondary">
           Apply for Business
         </Button>
         <Button href="/individual-grant" size="lg" variant="ghost">

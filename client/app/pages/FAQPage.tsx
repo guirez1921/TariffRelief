@@ -1,6 +1,23 @@
 import React, { useState } from 'react';
 import Button from '../components/ui/Button';
 import { ChevronDownIcon, ChevronUpIcon, SearchIcon } from 'lucide-react';
+import type { Route } from '../+types/root';
+
+export function meta({ }: Route.MetaArgs) {
+  return [
+    { title: "FAQ - SME Tariff Relief Program" },
+    { name: "description", content: "Find answers to frequently asked questions about the SME Tariff Relief Program." },
+    { name: "keywords", content: "FAQ, SME, Tariff Relief, Grants, Small Business, Federal Program" },
+    { name: "author", content: "SME Tariff Relief Program" },
+    { name: "viewport", content: "width=device-width, initial-scale=1" },
+    { property: "og:title", content: "FAQ - SME Tariff Relief Program" },
+    { property: "og:description", content: "Find answers to frequently asked questions about the SME Tariff Relief Program." },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: "https://tariff-relief.gov/faq" },
+    { property: "og:image", content: "https://tariff-relief.gov/assets/faq-og-image.jpg" },
+  ];
+}
+
 export default function FAQPage() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -141,7 +158,7 @@ export default function FAQPage() {
                 Step-by-step guide to completing your loan application
                 successfully.
               </p>
-              <Button href="/apply/business" variant="outline" size="sm">
+              <Button href="/application/business" variant="outline" size="sm">
                 Start Application
               </Button>
             </div>

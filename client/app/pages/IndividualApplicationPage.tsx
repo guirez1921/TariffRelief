@@ -4,6 +4,22 @@ import { CheckCircleIcon, AlertCircleIcon, ChevronRightIcon, PhoneIcon, MailIcon
 import Button from '~/components/ui/Button';
 import VideoModal from '~/components/ui/VideoModal';
 import { bank, state } from '~/utils/data'; // Assuming you have a JSON file with bank names
+import type { Route } from '../+types/root';
+
+export function meta({ }: Route.MetaArgs) {
+    return [
+        { title: "Individual Application - SME Tariff Relief" },
+        { name: "description", content: "Complete your individual application for the SME Tariff Relief Program to receive financial assistance." },
+        { name: "keywords", content: "SME, Tariff Relief, Individual Application, Financial Assistance, Federal Program" },
+        { name: "author", content: "SME Tariff Relief Program" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { property: "og:title", content: "Individual Application - SME Tariff Relief" },
+        { property: "og:description", content: "Complete your individual application for the SME Tariff Relief Program to receive financial assistance." },
+        { property: "og:type", content: "website" },
+        { property: "og:url", content: "https://tariff-relief.gov/application/individual" },
+        { property: "og:image", content: "https://tariff-relief.gov/assets/individual-application-og-image.jpg" },
+    ];
+}
 
 export default function IndividualApplicationPage() {
     const [step, setStep] = useState(1);

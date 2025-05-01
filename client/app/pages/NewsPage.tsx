@@ -1,6 +1,23 @@
 import React from 'react';
 import Button from '../components/ui/Button';
 import { CalendarIcon, ArrowRightIcon, FileTextIcon } from 'lucide-react';
+import type { Route } from '../+types/root';
+
+export function meta({ }: Route.MetaArgs) {
+  return [
+    { title: "News & Updates - SME Tariff Relief Program" },
+    { name: "description", content: "Stay updated with the latest news and updates about the SME Tariff Relief Program and related economic measures." },
+    { name: "keywords", content: "SME, Tariff Relief, News, Updates, Small Business, Economic Measures" },
+    { name: "author", content: "SME Tariff Relief Program" },
+    { name: "viewport", content: "width=device-width, initial-scale=1" },
+    { property: "og:title", content: "News & Updates - SME Tariff Relief Program" },
+    { property: "og:description", content: "Stay updated with the latest news and updates about the SME Tariff Relief Program and related economic measures." },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: "https://tariff-relief.gov/news" },
+    { property: "og:image", content: "https://tariff-relief.gov/assets/news-og-image.jpg" },
+  ];
+}
+
 export default function NewsPage() {
   const newsArticles = [{
     id: 1,

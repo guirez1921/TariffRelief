@@ -1,5 +1,21 @@
 import React, { useState } from 'react';
 import { CalculatorIcon } from 'lucide-react';
+import type { Route } from '../+types/root';
+
+export function meta({ }: Route.MetaArgs) {
+  return [
+    { title: "Grant Calculator - SME Tariff Relief" },
+    { name: "description", content: "Estimate your potential grant eligibility with the SME Tariff Relief Grant Calculator." },
+    { name: "keywords", content: "Grant Calculator, SME, Tariff Relief, Business Grants, Individual Grants" },
+    { name: "author", content: "SME Tariff Relief Program" },
+    { name: "viewport", content: "width=device-width, initial-scale=1" },
+    { property: "og:title", content: "Grant Calculator - SME Tariff Relief" },
+    { property: "og:description", content: "Estimate your potential grant eligibility with the SME Tariff Relief Grant Calculator." },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: "https://tariff-relief.gov/estimate" },
+    { property: "og:image", content: "https://tariff-relief.gov/assets/grant-calculator-og-image.jpg" },
+  ];
+}
 
 export default function CalculatorPage() {
   const [applicantType, setApplicantType] = useState<string | null>(null);

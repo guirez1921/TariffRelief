@@ -41,13 +41,13 @@ export default function Header() {
               Grant Calculator
             </NavLink>
             <NavLink 
-              to="/apply/individual" 
+              to="/application/individual" 
               className={({ isActive }) => isActive ? "text-blue-400 py-2" : "hover:text-blue-200 py-2"}
             >
               Individual Application
             </NavLink>
             <NavLink 
-              to="/apply/business" 
+              to="/application/business" 
               className={({ isActive }) => isActive ? "text-blue-400 py-2" : "hover:text-blue-200 py-2"}
             >
               Business Application
@@ -87,10 +87,10 @@ export default function Header() {
           <Link to="/estimate" className="block hover:text-blue-200 py-2">
             Grant Calculator
           </Link>
-          <Link to="/apply/individual" className="block hover:text-blue-200 py-2">
+          <Link to="/application/individual" className="block hover:text-blue-200 py-2">
             Grant Application for Individuals
           </Link>
-          <Link to="/apply/business" className="block hover:text-blue-200 py-2">
+          <Link to="/application/business" className="block hover:text-blue-200 py-2">
             Grant Application for SME's
           </Link>
           <Link to="/faq" className="block hover:text-blue-200 py-2">

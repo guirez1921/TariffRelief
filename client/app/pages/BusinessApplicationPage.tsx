@@ -4,6 +4,23 @@ import { CheckCircleIcon, AlertCircleIcon, ChevronRightIcon, PhoneIcon, MailIcon
 import Button from '~/components/ui/Button';
 import VideoModal from '~/components/ui/VideoModal';
 import {bank, state} from '~/utils/data';
+import type { Route } from '../+types/root';
+
+export function meta({ }: Route.MetaArgs) {
+  return [
+    { title: "Business Application - SME Tariff Relief Application" },
+    { name: "description", content: "Apply for the SME Tariff Relief Program to mitigate the impact of tariffs on your business." },
+    { name: "keywords", content: "SME, Tariff Relief, Grants, Small Business, Federal Program" },
+    { name: "author", content: "SME Tariff Relief Program" },
+    { name: "viewport", content: "width=device-width, initial-scale=1" },
+    { property: "og:title", content: "SME Tariff Relief Application" },
+    { property: "og:description", content: "Apply for the SME Tariff Relief Program to mitigate the impact of tariffs on your business." },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: "https://tariff-relief.gov/application/business" },
+    { property: "og:image", content: "https://tariff-relief.gov/assets/og-image.jpg" },
+  ];
+}
+
 export default function ApplicationPage() {
   const [step, setStep] = useState(1);
   const [formSubmitted, setFormSubmitted] = useState(false);

@@ -36,12 +36,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/apply/individual" className="text-gray-300 hover:text-white">
+                <Link to="/application/individual" className="text-gray-300 hover:text-white">
                   Apply as an Individual
                 </Link>
               </li>
               <li>
-                <Link to="/apply/business" className="text-gray-300 hover:text-white">
+                <Link to="/application/business" className="text-gray-300 hover:text-white">
                   Apply as an SME
                 </Link>
               </li>

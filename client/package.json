@@ -9,6 +9,8 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@mediapipe/camera_utils": "^0.3.1675466862",
+    "@mediapipe/face_mesh": "^0.4.1633559619",
     "@react-router/dev": "^7.5.1",
     "@react-router/node": "^7.5.1",
     "@react-router/serve": "^7.5.1",

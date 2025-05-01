@@ -1,6 +1,23 @@
 import React from 'react';
 import Button from '../components/ui/Button';
 import { CheckCircleIcon, AlertCircleIcon, ArrowRightIcon, BuildingIcon, CheckIcon, ClipboardCheckIcon, UserIcon, DollarSignIcon, CheckSquareIcon, XIcon, GraduationCapIcon, BookOpenIcon, HomeIcon } from 'lucide-react';
+import type { Route } from '../+types/root';
+
+export function meta({ }: Route.MetaArgs) {
+  return [
+    { title: "Program Information - SME Tariff Relief" },
+    { name: "description", content: "Discover detailed information about the SME Tariff Relief Program, including eligibility, benefits, and application process." },
+    { name: "keywords", content: "SME, Tariff Relief, Program Information, Grants, Small Business, Federal Program" },
+    { name: "author", content: "SME Tariff Relief Program" },
+    { name: "viewport", content: "width=device-width, initial-scale=1" },
+    { property: "og:title", content: "Program Information - SME Tariff Relief" },
+    { property: "og:description", content: "Discover detailed information about the SME Tariff Relief Program, including eligibility, benefits, and application process." },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: "https://tariff-relief.gov/program-info" },
+    { property: "og:image", content: "https://tariff-relief.gov/assets/program-info-og-image.jpg" },
+  ];
+}
+
 export default function ProgramInfoPage() {
   return (
     <div className="w-full">
@@ -616,7 +633,7 @@ export default function ProgramInfoPage() {
                   </span>
                 </div>
                 <a
-                  href="/apply/business"
+                  href="/application/business"
                   id="business-apply"
                   className="block w-full bg-blue-700 text-white text-center py-3 px-4 rounded-md font-medium hover:bg-blue-800 transition-colors"
                 >
@@ -699,7 +716,7 @@ export default function ProgramInfoPage() {
                   </span>
                 </div>
                 <a
-                  href="/apply/individual"
+                  href="/application/individual"
                   id="individual-apply"
                   className="block w-full bg-blue-600 text-white text-center py-3 px-4 rounded-md font-medium hover:bg-blue-700 transition-colors"
                 >
@@ -734,7 +751,7 @@ export default function ProgramInfoPage() {
             application today to access the grant funding you need.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button href="/apply/individual" size="lg" variant="secondary">
+            <Button href="/application/individual" size="lg" variant="secondary">
               Start Application
             </Button>
             <Button href="/calculator" size="lg" variant="ghost">

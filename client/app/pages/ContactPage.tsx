@@ -1,7 +1,23 @@
 import React, { useState } from 'react';
 import { PhoneIcon, MailIcon, MapPinIcon, ClockIcon, CheckCircleIcon } from 'lucide-react';
 import Button from '~/components/ui/Button';
-import { APIProvider, Map } from '@vis.gl/react-google-maps';
+import type { Route } from '../+types/root';
+
+export function meta({ }: Route.MetaArgs) {
+  return [
+    { title: "Contact - SME Tariff Relief Program" },
+    { name: "description", content: "Get in touch with the SME Tariff Relief Program for assistance and inquiries." },
+    { name: "keywords", content: "Contact, SME, Tariff Relief, Support, Assistance, Small Business" },
+    { name: "author", content: "SME Tariff Relief Program" },
+    { name: "viewport", content: "width=device-width, initial-scale=1" },
+    { property: "og:title", content: "Contact SME Tariff Relief Program" },
+    { property: "og:description", content: "Get in touch with the SME Tariff Relief Program for assistance and inquiries." },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: "https://tariff-relief.gov/contact" },
+    { property: "og:image", content: "https://tariff-relief.gov/assets/contact-og-image.jpg" },
+  ];
+}
+
 export default function ContactPage() {
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [formData, setFormData] = useState({
