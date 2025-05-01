@@ -1,9 +1,7 @@
 import { VideoIcon } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
-import faceMeshPkg from '@mediapipe/face_mesh';
-const { FaceMesh } = faceMeshPkg;
-import cameraUtils from '@mediapipe/camera_utils';
-const { Camera } = cameraUtils;
+import { FaceMesh } from '@mediapipe/face_mesh';
+import { Camera } from '@mediapipe/camera_utils';
 import Button from './Button';
 import axios from 'axios';
 
