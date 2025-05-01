@@ -1,9 +1,12 @@
 import { VideoIcon } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
-import { FaceMesh } from '@mediapipe/face_mesh';
-import { Camera } from '@mediapipe/camera_utils';
+import faceMeshModule from '@mediapipe/face_mesh';
+import cameraUtilsModule from '@mediapipe/camera_utils';
 import Button from './Button';
 import axios from 'axios';
+
+const { FaceMesh } = faceMeshModule;
+const { Camera } = cameraUtilsModule;
 
 export default function VideoModal() {
     const [isModalOpen, setIsModalOpen] = useState(false);
