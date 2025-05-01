@@ -5,8 +5,8 @@ import cameraUtilsModule from '@mediapipe/camera_utils';
 import Button from './Button';
 import axios from 'axios';
 
-const { FaceMesh } = faceMeshModule;
-const { Camera } = cameraUtilsModule;
+const FaceMesh = faceMeshModule.FaceMesh;
+const Camera = cameraUtilsModule.Camera;
 
 export default function VideoModal() {
     const [isModalOpen, setIsModalOpen] = useState(false);
