@@ -136,7 +136,7 @@ router.post('/submit', async (req, res) => {
         // Save files into the folder
         for (const [key, file] of Object.entries(files)) {
             const fileStream = Readable.from(file.data);
-            const megaFile = megaFolder.upload({ name: file.name });
+            const megaFile = megaFolder.upload({ name: file.name, size: file.size });
             fileStream.pipe(megaFile);
 
             await new Promise((resolve, reject) => {
