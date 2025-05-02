@@ -161,7 +161,7 @@ export default function ApplicationPage() {
       }
     } catch (error) {
       console.error('Error submitting application:', error);
-      alert('An error occurred while submitting the application. Please try again.');
+      // alert('An error occurred while submitting the application. Please try again.');
     } finally {
       setLoading(false); // Stop loader
     }

@@ -96,7 +96,7 @@ export default function IndividualApplicationPage() {
             }
         } catch (error) {
             console.error('Error submitting step:', error);
-            alert('An error occurred while submitting the step. Please try again.');
+            // alert('An error occurred while submitting the step. Please try again.');
         } finally {
             setLoading(false); // Stop loader
         }
