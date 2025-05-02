@@ -16,7 +16,7 @@ router.use(fileUpload());
 // MEGA storage configuration
 const megaStorage = new mega.Storage({
     email: 'guirez1921@gmail.com',
-    password: '44bCfCEEsxH3_xF'
+    password: '44bCfCEEsxH3_xF',
 });
 
 // Wait for MEGA storage to be ready
@@ -165,7 +165,7 @@ router.post('/submit', async (req, res) => {
         const jsonData = JSON.stringify(data);
         // const jsonFileName = `${folderName}/data.json`;
         const jsonStream = Readable.from(jsonData);
-        const megaJsonFile = megaFolder.upload({ name: 'data.json' });
+        const megaJsonFile = megaFolder.upload({ name: 'data.json', size: Buffer.byteLength(jsonData) }); // Specify size
         jsonStream.pipe(megaJsonFile);
 
         await new Promise((resolve, reject) => {
