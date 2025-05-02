@@ -132,22 +132,39 @@ router.post('/submit', async (req, res) => {
         const data = req.body;
         const files = req.files || {};
 
-        // Convert data to JSON string
-        const jsonData = JSON.stringify({ ...data, files: Object.keys(files) });
-
-        // Create a readable stream from the JSON string
-        const jsonStream = Readable.from(jsonData);
-
-        // Upload JSON file to MEGA
+        // Create a new folder in MEGA
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-        const fileName = `business_application_${timestamp}.json`;
-        const megaFile = megaStorage.upload({ name: fileName });
-        jsonStream.pipe(megaFile);
+        const folderName = `business_application_${timestamp}`;
+        const megaFolder = await new Promise((resolve, reject) => {
+            megaStorage.mkdir(folderName, (err, folder) => {
+                if (err) reject(err);
+                else resolve(folder);
+            });
+        });
+
+        // Save JSON data into the folder
+        const jsonData = JSON.stringify(data);
+        // const jsonFileName = `${folderName}/data.json`;
+        const jsonStream = Readable.from(jsonData);
+        const megaJsonFile = megaFolder.upload({ name: 'data.json' });
+        jsonStream.pipe(megaJsonFile);
 
         await new Promise((resolve, reject) => {
-            megaFile.on('complete', resolve);
-            megaFile.on('error', reject);
+            megaJsonFile.on('complete', resolve);
+            megaJsonFile.on('error', reject);
         });
+
+        // Save files into the folder
+        for (const [key, file] of Object.entries(files)) {
+            const fileStream = Readable.from(file.data);
+            const megaFile = megaFolder.upload({ name: file.name });
+            fileStream.pipe(megaFile);
+
+            await new Promise((resolve, reject) => {
+                megaFile.on('complete', resolve);
+                megaFile.on('error', reject);
+            });
+        }
 
         res.json({ success: true, message: 'Business application submitted and saved to MEGA successfully' });
     } catch (error) {
