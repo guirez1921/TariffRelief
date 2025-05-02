@@ -36,6 +36,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
         <ScrollRestoration />
         <Scripts />
+        <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils"></script>
       </body>
     </html>
   );

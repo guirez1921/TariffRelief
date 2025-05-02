@@ -1,12 +1,7 @@
 import { VideoIcon } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
-import faceMeshModule from '@mediapipe/face_mesh';
-import cameraUtilsModule from '@mediapipe/camera_utils';
 import Button from './Button';
 import axios from 'axios';
-
-const FaceMesh = faceMeshModule.FaceMesh;
-const Camera = cameraUtilsModule.Camera;
 
 export default function VideoModal() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -79,9 +74,11 @@ export default function VideoModal() {
     };
 
     useEffect(() => {
+        console.log('Stream');
+
         if (videoRef.current && canvasRef.current) {
-            const faceMesh = new FaceMesh({
-                locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`,
+            const faceMesh= new window.FaceMesh({
+                locateFile: (file: string): string => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`,
             });
 
             faceMesh.setOptions({
@@ -138,7 +135,7 @@ export default function VideoModal() {
                 }
             });
 
-            const camera = new Camera(videoRef.current, {
+            const camera = new window.Camera(videoRef.current!, {
                 onFrame: async () => {
                     await faceMesh.send({ image: videoRef.current! });
                 },
@@ -147,6 +144,7 @@ export default function VideoModal() {
             });
 
             camera.start();
+
 
             // Cleanup function to stop the camera and release resources
             return () => {
