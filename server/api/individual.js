@@ -71,7 +71,7 @@ router.post('/verify', async (req, res) => {
                 if (!data.accountType) errors.accountType = 'Account type is required';
                 break;
             case 3: // Validate Documentation
-                const files = req.files || {};
+                const files = req.data || {};
                 const requiredFiles = ['idProof', 'incomeProof', 'tariffImpactProof'];
 
                 for (const fileKey of requiredFiles) {
