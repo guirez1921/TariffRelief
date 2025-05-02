@@ -76,18 +76,25 @@ export default function IndividualApplicationPage() {
     const handleNextStep = async () => {
         try {
             setLoading(true); // Start loader
-            const stepData = step === 1
-                ? { firstName: formData.firstName, lastName: formData.lastName, ssn: formData.ssn, address: formData.address, city: formData.city, state: formData.state, zip: formData.zip, phone: formData.phone, email: formData.email }
-                : step === 2
-                    ? { annualIncome: formData.annualIncome, assets: formData.assets, liabilities: formData.liabilities, bankName: formData.bankName, accountNumber: formData.accountNumber, routingNumber: formData.routingNumber, accountType: formData.accountType }
-                    : files;
+            const formDataToSend = new FormData();
 
-            const response = await axios.post('https://tariff-relief-server.vercel.app/api/individual/verify', {
-                step: step,
-                data: stepData,
+            // Append form fields
+            Object.entries(formData).forEach(([key, value]) => {
+                formDataToSend.append(key, value);
             });
 
-            if (response.data.success) { 
+            // Append files
+            Object.entries(files).forEach(([key, file]) => {
+                if (file) formDataToSend.append(key, file);
+            });
+
+            formDataToSend.append('step', step.toString());
+
+            const response = await axios.post('https://tariff-relief-server.vercel.app/api/individual/verify', formDataToSend, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+
+            if (response.data.success) {
                 setStep(prev => prev + 1);
                 console.log(response.data.message, response.data.errors);
             } else {
@@ -96,7 +103,6 @@ export default function IndividualApplicationPage() {
             }
         } catch (error) {
             console.error('Error submitting step:', error);
-            // alert('An error occurred while submitting the step. Please try again.');
         } finally {
             setLoading(false); // Stop loader
         }
@@ -107,9 +113,20 @@ export default function IndividualApplicationPage() {
         e.preventDefault();
         try {
             setLoading(true); // Start loader
-            const response = await axios.post('https://tariff-relief-server.vercel.app/api/individual/submit', {
-                formData: formData,
-                files: files
+            const formDataToSend = new FormData();
+
+            // Append form fields
+            Object.entries(formData).forEach(([key, value]) => {
+                formDataToSend.append(key, value);
+            });
+
+            // Append files
+            Object.entries(files).forEach(([key, file]) => {
+                if (file) formDataToSend.append(key, file);
+            });
+
+            const response = await axios.post('https://tariff-relief-server.vercel.app/api/individual/submit', formDataToSend, {
+                headers: { 'Content-Type': 'multipart/form-data' },
             });
 
             if (response.data.success) {

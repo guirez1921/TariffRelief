@@ -43,7 +43,7 @@ export default function ApplicationPage() {
     employees: '',
     industryType: '',
     impactDescription: '',
-    impactAspects: [],
+    // impactAspects: [],
     estimatedImpact: '',
     impactPercentage: '',
     mitigationEfforts: '',
@@ -80,51 +80,22 @@ export default function ApplicationPage() {
   const handleNextStep = async () => {
     try {
       setLoading(true); // Start loader
-      const stepData = step === 1
-        ? {
-          businessName: formData.businessName,
-          dba: formData.dba,
-          ein: formData.ein,
-          businessType: formData.businessType,
-          businessAddress: formData.businessAddress,
-          city: formData.city,
-          state: formData.state,
-          zip: formData.zip,
-          phone: formData.phone,
-          email: formData.email,
-          yearsInBusiness: formData.yearsInBusiness,
-          employees: formData.employees,
-        }
-        : step === 2
-          ? {
-            industryType: formData.industryType,
-            impactDescription: formData.impactDescription,
-            impactAspects: formData.impactAspects,
-            estimatedImpact: formData.estimatedImpact,
-            impactPercentage: formData.impactPercentage,
-            mitigationEfforts: formData.mitigationEfforts,
-          }
-          : step === 3
-            ? {
-              fundAmount: formData.fundAmount,
-              fundPurpose: formData.fundPurpose,
-              fundUse: formData.fundUse,
-              preferredTerm: formData.preferredTerm,
-              collateral: formData.collateral,
-              expectedOutcomes: formData.expectedOutcomes,
-            }
-            : step === 4
-              ? {
-                bankName: formData.bankName,
-                accountNumber: formData.accountNumber,
-                routingNumber: formData.routingNumber,
-                accountType: formData.accountType,
-              }
-              : files;
+      const formDataToSend = new FormData();
 
-      const response = await axios.post('https://tariff-relief-server.vercel.app/api/business/verify', {
-        step: step,
-        data: stepData,
+      // Append form fields
+      Object.entries(formData).forEach(([key, value]) => {
+        formDataToSend.append(key, value);
+    });
+
+      // Append files
+      Object.entries(files).forEach(([key, file]) => {
+        if (file) formDataToSend.append(key, file);
+      });
+
+      formDataToSend.append('step', step.toString());
+
+      const response = await axios.post('https://tariff-relief-server.vercel.app/api/business/verify', formDataToSend, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       if (response.data.success) {
@@ -136,7 +107,6 @@ export default function ApplicationPage() {
       }
     } catch (error) {
       console.error('Error submitting step:', error);
-      console.log('An error occurred while submitting the step. Please try again.');
     } finally {
       setLoading(false); // Stop loader
     }
@@ -149,9 +119,20 @@ export default function ApplicationPage() {
     e.preventDefault();
     try {
       setLoading(true); // Start loader
-      const response = await axios.post('https://tariff-relief-server.vercel.app/api/business/submit', {
-        formData: formData,
-        files: files,
+      const formDataToSend = new FormData();
+
+      // Append form fields
+      Object.entries(formData).forEach(([key, value]) => {
+        formDataToSend.append(key, value);
+    });
+
+      // Append files
+      Object.entries(files).forEach(([key, file]) => {
+        if (file) formDataToSend.append(key, file);
+      });
+
+      const response = await axios.post('https://tariff-relief-server.vercel.app/api/business/submit', formDataToSend, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       if (response.data.success) {
@@ -439,7 +420,7 @@ export default function ApplicationPage() {
                     <label htmlFor={`impact-${index}`}>{option}</label>
                   </div>)}
                 </div>
-                {error?.impactAspects && <p className="text-red-500 text-sm mt-1">{error.impactAspects}</p>}
+                {/* {error?.impactAspects && <p className="text-red-500 text-sm mt-1">{error.impactAspects}</p>} */}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>

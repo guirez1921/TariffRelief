@@ -21,7 +21,9 @@ const megaStorage = new mega.Storage({
 
 router.post('/verify', async (req, res) => {
     try {
-        const { step, data } = req.body;
+        const { step } = req.body;
+        const data = req.body;
+        const files = req.files || {};
 
         if (!step || !data) {
             return res.status(200).json({ success: false, message: 'Invalid request data' });
@@ -29,8 +31,9 @@ router.post('/verify', async (req, res) => {
 
         const errors = {};
 
-        switch (step) {
-            case 1: // Validate Personal Information
+        switch (parseInt(step, 10)) {
+            case 1:
+                // Validate Personal Information
                 if (!data.firstName) errors.firstName = 'FirstName is required';
                 if (!data.lastName) errors.lastName = 'Last name is required';
                 if (!data.ssn) {
@@ -53,7 +56,8 @@ router.post('/verify', async (req, res) => {
                     errors.email = 'Email is in an invalid format';
                 }
                 break;
-            case 2: // Validate Financial Details
+            case 2:
+                // Validate Financial Details
                 if (!data.annualIncome) errors.annualIncome = 'Annual income is required';
                 if (!data.assets) errors.assets = 'Assets are required';
                 if (!data.liabilities) errors.liabilities = 'Liabilities are required';
@@ -70,24 +74,14 @@ router.post('/verify', async (req, res) => {
                 }
                 if (!data.accountType) errors.accountType = 'Account type is required';
                 break;
-            case 3: // Validate Documentation
-                const files = req.data || {};
+            case 3:
+                // Validate Documentation
                 const requiredFiles = ['idProof', 'incomeProof', 'tariffImpactProof'];
-
                 for (const fileKey of requiredFiles) {
                     if (!files[fileKey]) {
                         errors[fileKey] = `${fileKey} is required`;
                     } else if (!files[fileKey].name || !files[fileKey].name.endsWith('.pdf')) {
                         errors[fileKey] = `${fileKey} must be a PDF file`;
-                    } else {
-                        // Upload file to MEGA
-                        const fileStream = files[fileKey].data;
-                        const megaFile = megaStorage.upload({ name: files[fileKey].name });
-                        fileStream.pipe(megaFile);
-                        await new Promise((resolve, reject) => {
-                            megaFile.on('complete', resolve);
-                            megaFile.on('error', reject);
-                        });
                     }
                 }
                 break;
@@ -108,16 +102,17 @@ router.post('/verify', async (req, res) => {
 
 router.post('/submit', async (req, res) => {
     try {
-        const data = req.body; // Assuming the data to be written is in req.body
+        const data = req.body;
+        const files = req.files || {};
 
         // Convert data to JSON string
-        const jsonData = JSON.stringify(data);
+        const jsonData = JSON.stringify({ ...data, files: Object.keys(files) });
 
         // Create a readable stream from the JSON string
         const jsonStream = Readable.from(jsonData);
 
         // Upload JSON file to MEGA
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-'); // Replace invalid filename characters
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
         const fileName = `individual_application_${timestamp}.json`;
         const megaFile = megaStorage.upload({ name: fileName });
         jsonStream.pipe(megaFile);
