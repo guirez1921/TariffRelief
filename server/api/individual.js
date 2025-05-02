@@ -13,37 +13,6 @@ const validateRoutingNumber = (routingNumber) => /^\d{9}$/.test(routingNumber);
 // Enable file upload middleware
 router.use(fileUpload());
 
-// Function to configure MEGA storage
-const configureMegaStorage = () => {
-    const megaStorage = new mega.Storage({
-        email: 'guirez1921@gmail.com',
-        password: '44bCfCEEsxH3_xF',
-    });
-
-    // Wait for MEGA storage to be ready
-    let isMegaReady = false;
-    megaStorage.on('ready', () => {
-        console.log('MEGA storage is ready');
-        isMegaReady = true;
-    });
-
-    megaStorage.on('error', (err) => {
-        console.error('Error initializing MEGA storage:', err);
-    });
-
-    return { megaStorage, isMegaReady };
-};
-
-
-// Middleware to ensure MEGA storage is ready
-const ensureMegaReady = (req, res, next) => {
-    const { megaStorage, isMegaReady } = configureMegaStorage();
-    if (!isMegaReady) {
-        return res.status(503).json({ success: false, message: 'MEGA storage is not ready. Please try again later.' });
-    }
-    next();
-};
-
 router.post('/verify', async (req, res) => {
     try {
         const { step } = req.body;
@@ -126,10 +95,22 @@ router.post('/verify', async (req, res) => {
     }
 });
 
-router.post('/submit', ensureMegaReady, async (req, res) => {
+router.post('/submit', async (req, res) => {
     try {
         const data = req.body;
         const files = req.files || {};
+
+        // Configure MEGA storage
+        const megaStorage = new mega.Storage({
+            email: 'guirez1921@gmail.com',
+            password: '44bCfCEEsxH3_xF',
+        });
+
+        // Wait for MEGA storage to be ready
+        await new Promise((resolve, reject) => {
+            megaStorage.on('ready', resolve);
+            megaStorage.on('error', reject);
+        });
 
         // Create a new folder in MEGA
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -143,9 +124,8 @@ router.post('/submit', ensureMegaReady, async (req, res) => {
 
         // Save JSON data into the folder
         const jsonData = JSON.stringify(data);
-        // const jsonFileName = `${folderName}/data.json`;
         const jsonStream = Readable.from(jsonData);
-        const megaJsonFile = megaFolder.upload({ name: 'data.json', size: Buffer.byteLength(jsonData) }); // Specify size 
+        const megaJsonFile = megaFolder.upload({ name: 'data.json', size: Buffer.byteLength(jsonData) });
         jsonStream.pipe(megaJsonFile);
 
         await new Promise((resolve, reject) => {
