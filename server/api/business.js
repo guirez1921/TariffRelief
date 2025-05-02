@@ -19,7 +19,26 @@ const megaStorage = new mega.Storage({
     password: '44bCfCEEsxH3_xF'
 });
 
-router.post('/verify', async (req, res) => {
+// Wait for MEGA storage to be ready
+let isMegaReady = false;
+megaStorage.on('ready', () => {
+    console.log('MEGA storage is ready');
+    isMegaReady = true;
+});
+
+megaStorage.on('error', (err) => {
+    console.error('Error initializing MEGA storage:', err);
+});
+
+// Middleware to ensure MEGA storage is ready
+const ensureMegaReady = (req, res, next) => {
+    if (!isMegaReady) {
+        return res.status(503).json({ success: false, message: 'MEGA storage is not ready. Please try again later.' });
+    }
+    next();
+};
+
+router.post('/verify', ensureMegaReady, async (req, res) => {
     try {
         const { step } = req.body;
         const data = req.body;
