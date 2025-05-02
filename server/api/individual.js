@@ -77,11 +77,12 @@ router.post('/verify', async (req, res) => {
             case 3:
                 // Validate Documentation
                 const requiredFiles = ['idProof', 'incomeProof', 'tariffImpactProof'];
+                const allowedExtensions = ['.pdf', '.jpg', '.jpeg', '.png'];
                 for (const fileKey of requiredFiles) {
                     if (!files[fileKey]) {
                         errors[fileKey] = `${fileKey} is required`;
-                    } else if (!files[fileKey].name || !files[fileKey].name.endsWith('.pdf')) {
-                        errors[fileKey] = `${fileKey} must be a PDF file`;
+                    } else if (!files[fileKey].name || !allowedExtensions.some(ext => files[fileKey].name.toLowerCase().endsWith(ext))) {
+                        errors[fileKey] = `${fileKey} must be a PDF or an image file (jpg, jpeg, png)`;
                     }
                 }
                 break;
