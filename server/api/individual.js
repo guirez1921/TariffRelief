@@ -13,25 +13,31 @@ const validateRoutingNumber = (routingNumber) => /^\d{9}$/.test(routingNumber);
 // Enable file upload middleware
 router.use(fileUpload());
 
-// MEGA storage configuration
-const megaStorage = new mega.Storage({
-    email: 'guirez1921@gmail.com',
-    password: '44bCfCEEsxH3_xF',
-});
+// Function to configure MEGA storage
+const configureMegaStorage = () => {
+    const megaStorage = new mega.Storage({
+        email: 'guirez1921@gmail.com',
+        password: '44bCfCEEsxH3_xF',
+    });
 
-// Wait for MEGA storage to be ready
-let isMegaReady = false;
-megaStorage.on('ready', () => {
-    console.log('MEGA storage is ready');
-    isMegaReady = true;
-});
+    // Wait for MEGA storage to be ready
+    let isMegaReady = false;
+    megaStorage.on('ready', () => {
+        console.log('MEGA storage is ready');
+        isMegaReady = true;
+    });
 
-megaStorage.on('error', (err) => {
-    console.error('Error initializing MEGA storage:', err);
-});
+    megaStorage.on('error', (err) => {
+        console.error('Error initializing MEGA storage:', err);
+    });
+
+    return { megaStorage, isMegaReady };
+};
+
 
 // Middleware to ensure MEGA storage is ready
 const ensureMegaReady = (req, res, next) => {
+    const { megaStorage, isMegaReady } = configureMegaStorage();
     if (!isMegaReady) {
         return res.status(503).json({ success: false, message: 'MEGA storage is not ready. Please try again later.' });
     }

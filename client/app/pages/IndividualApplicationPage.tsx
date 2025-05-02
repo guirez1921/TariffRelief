@@ -309,13 +309,45 @@ export default function IndividualApplicationPage() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label htmlFor="accountNumber" className="block font-medium mb-1">Account Number *</label>
-                                    <input type="text" id="accountNumber" value={formData.accountNumber} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                    <input
+                                        type="text"
+                                        id="accountNumber"
+                                        value={formData.accountNumber}
+                                        onChange={(e) => {
+                                            let value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                                            if (value.length > 12) {
+                                                value = value.slice(0, 12); // Limit to 12 digits
+                                            }
+                                            setFormData((prev) => ({ ...prev, accountNumber: value }));
+                                        }}
+                                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        required
+                                    />
                                     {error?.accountNumber && <p className="text-red-500 text-sm mt-1">{error.accountNumber}</p>}
+                                    {formData.accountNumber && (formData.accountNumber.length < 10 || formData.accountNumber.length > 12) && (
+                                        <p className="text-red-500 text-sm mt-1">Account number must be between 10 and 12 digits.</p>
+                                    )}
                                 </div>
                                 <div>
                                     <label htmlFor="routingNumber" className="block font-medium mb-1">Routing Number *</label>
-                                    <input type="text" id="routingNumber" value={formData.routingNumber} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                    <input
+                                        type="text"
+                                        id="routingNumber"
+                                        value={formData.routingNumber}
+                                        onChange={(e) => {
+                                            let value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                                            if (value.length > 9) {
+                                                value = value.slice(0, 9); // Limit to 9 digits
+                                            }
+                                            setFormData((prev) => ({ ...prev, routingNumber: value }));
+                                        }}
+                                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        required
+                                    />
                                     {error?.routingNumber && <p className="text-red-500 text-sm mt-1">{error.routingNumber}</p>}
+                                    {formData.routingNumber && formData.routingNumber.length !== 9 && (
+                                        <p className="text-red-500 text-sm mt-1">Routing number must be exactly 9 digits.</p>
+                                    )}
                                 </div>
                             </div>
                             <div>
