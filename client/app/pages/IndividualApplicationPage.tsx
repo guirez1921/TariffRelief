@@ -33,6 +33,7 @@ export default function IndividualApplicationPage() {
         firstName: '',
         lastName: '',
         ssn: '',
+        dob: '',
         address: '',
         city: '',
         state: '',
@@ -236,7 +237,12 @@ export default function IndividualApplicationPage() {
                                     {error?.zip && <p className="text-red-500 text-sm mt-1">{error.zip}</p>}
                                 </div>
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label htmlFor="dob" className="block font-medium mb-1">Date of Birth *</label>
+                                    <input type="date" id="dob" value={formData.dob} onChange={handleInputChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                                    {error?.dob && <p className="text-red-500 text-sm mt-1">{error.dob}</p>}
+                                </div>
                                 <div>
                                     <label htmlFor="phone" className="block font-medium mb-1">Phone *</label>
                                     <div className="relative">
