@@ -407,7 +407,7 @@ export default function ProgramInfoPage() {
                 </div>
               </div>
               <a
-                href="/idividual -application"
+                href="/individual -application"
                 className="inline-block float-right bg-blue-700 text-white px-6 py-3 rounded-md font-medium hover:bg-blue-800 transition-colors mt-6"
               >
                 Check Individual Eligibility

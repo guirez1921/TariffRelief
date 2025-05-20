@@ -27,7 +27,6 @@ export default function IndividualApplicationPage() {
     const [loading, setLoading] = useState(false); // Loader state
     const [error, setError] = useState<Partial<Record<string, string>> | null>(null); // Error state
     const [applicationID, setApplicationID] = useState<string>('');
-    const [isSelfApplicant, setIsSelfApplicant] = useState(false); // New state for self-applicant query
 
     const [formData, setFormData] = useState({
         firstName: '',
@@ -61,13 +60,6 @@ export default function IndividualApplicationPage() {
         tariffImpactProof: null,
     });
 
-    const [applicantData, setApplicantData] = useState({
-        name: '',
-        email: '',
-        ssn: '',
-        videoSubmitted: false,
-    });
-
     useEffect(() => {
         const savedFormData = localStorage.getItem('individualApplicationFormData');
         if (savedFormData) {
@@ -90,31 +82,6 @@ export default function IndividualApplicationPage() {
         const { id, files: uploadedFiles } = e.target;
         if (uploadedFiles && uploadedFiles[0]) {
             setFiles(prev => ({ ...prev, [id]: uploadedFiles[0] }));
-        }
-    };
-
-    const handleApplicantInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { id, value } = e.target;
-        setApplicantData((prev) => ({ ...prev, [id]: value }));
-    };
-
-    const handleSelfApplicantChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const isChecked = e.target.checked;
-        setIsSelfApplicant(isChecked);
-        if (isChecked) {
-            setApplicantData({
-                name: `${formData.firstName} ${formData.lastName}`,
-                email: formData.email,
-                ssn: formData.ssn,
-                videoSubmitted: false,
-            });
-        } else {
-            setApplicantData({
-                name: '',
-                email: '',
-                ssn: '',
-                videoSubmitted: false,
-            });
         }
     };
 
@@ -439,20 +406,18 @@ export default function IndividualApplicationPage() {
                                 {error?.idProof && <p className="text-red-500 text-sm mt-1">{error.idProof}</p>}
                             </div>
                             <div>
-                                <label htmlFor="incomeProof" className="block font-medium mb-1">Proof of Income *</label>
-                                <input type="file" id="incomeProof" onChange={handleFileChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-                                {error?.incomeProof && <p className="text-red-500 text-sm mt-1">{error.incomeProof}</p>}
+                                <label htmlFor="incomeProof" className="block font-medium mb-1">Proof of Income <span className="text-gray-500">(optional)</span></label>
+                                <input type="file" id="incomeProof" onChange={handleFileChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </div>
                             <div>
-                                <label htmlFor="tariffImpactProof" className="block font-medium mb-1">Proof of Tariff Impact *</label>
-                                <input type="file" id="tariffImpactProof" onChange={handleFileChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-                                {error?.tariffImpactProof && <p className="text-red-500 text-sm mt-1">{error.tariffImpactProof}</p>}
+                                <label htmlFor="tariffImpactProof" className="block font-medium mb-1">Proof of Tariff Impact <span className="text-gray-500">(optional)</span></label>
+                                <input type="file" id="tariffImpactProof" onChange={handleFileChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                             </div>
                         </div>
                         <div className="mt-8 flex justify-between">
                             <Button onClick={handlePrevStep} variant="outline" disabled={loading} type='button'>Previous</Button>
                             <Button onClick={handleNextStep} variant="primary" disabled={loading} type='button'>
-                                {loading ? 'Loading...' : 'Next: Applicant Information'} <ChevronRightIcon size={16} className="ml-1" />
+                                {loading ? 'Loading...' : 'Next: Review & Submit'} <ChevronRightIcon size={16} className="ml-1" />
                             </Button>
                         </div>
                     </>
@@ -460,104 +425,11 @@ export default function IndividualApplicationPage() {
             case 4:
                 return (
                     <>
-                        <h2 className="text-xl font-bold mb-6 text-blue-800">Applicant Information</h2>
-                        <div className="space-y-4">
-                            <div>
-                                <label className="flex items-center">
-                                    <input
-                                        type="checkbox"
-                                        checked={isSelfApplicant}
-                                        onChange={handleSelfApplicantChange}
-                                        className="mr-2"
-                                    />
-                                    I am applying for myself
-                                </label>
-                            </div>
-                            <div>
-                                <label htmlFor="name" className="block font-medium mb-1">
-                                    Full Name *
-                                </label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    value={applicantData.name}
-                                    onChange={handleApplicantInputChange}
-                                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
-                                    disabled={isSelfApplicant}
-                                />
-                                {error?.name && <p className="text-red-500 text-sm mt-1">{error.name}</p>}
-                            </div>
-                            <div>
-                                <label htmlFor="email" className="block font-medium mb-1">
-                                    Email Address *
-                                </label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    value={applicantData.email}
-                                    onChange={handleApplicantInputChange}
-                                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
-                                    disabled={isSelfApplicant}
-                                />
-                                {error?.email && <p className="text-red-500 text-sm mt-1">{error.email}</p>}
-                            </div>
-                            <div>
-                                <label htmlFor="ssn" className="block font-medium mb-1">
-                                    Social Security Number (SSN) *
-                                </label>
-                                <input
-                                    type="text"
-                                    id="ssn"
-                                    value={applicantData.ssn}
-                                    onChange={(e) => {
-                                        let value = e.target.value.replace(/\D/g, '');
-                                        if (value.length > 3 && value.length <= 5) {
-                                            value = value.slice(0, 3) + '-' + value.slice(3);
-                                        } else if (value.length > 5) {
-                                            value = value.slice(0, 3) + '-' + value.slice(3, 5) + '-' + value.slice(5, 9);
-                                        }
-                                        setApplicantData((prev) => ({ ...prev, ssn: value }));
-                                    }}
-                                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
-                                    disabled={isSelfApplicant}
-                                />
-                                {error?.ssn && <p className="text-red-500 text-sm mt-1">{error.ssn}</p>}
-                            </div>
-                            <div>
-                                <label className="block font-medium mb-1">Video Submission *</label>
-                                <p className="text-sm text-gray-500 mb-2">
-                                    Please record a short video introducing yourself and explaining your application.
-                                </p>
-                                <VideoModal />
-                                {!applicantData.videoSubmitted && (
-                                    <p className="text-red-500 text-sm mt-1">
-                                        Video submission is required.
-                                    </p>
-                                )}
-                            </div>
-                        </div>
-                        <div className="mt-8 flex justify-between">
-                            <Button onClick={handlePrevStep} variant="outline" disabled={loading} type="button">Previous</Button>
-                            <Button onClick={handleNextStep} variant="primary" disabled={loading} type="button">
-                                {loading ? 'Loading...' : 'Next: Review & Submit'} <ChevronRightIcon size={16} className="ml-1" />
-                            </Button>
-                        </div>
-                    </>
-                );
-            case 5:
-                return (
-                    <>
                         <h2 className="text-xl font-bold mb-6 text-blue-800">Review & Submit Application</h2>
                         <div className="bg-gray-50 p-6 rounded-lg mb-8">
                             <h3 className="font-bold mb-4">Application Summary</h3>
                             <p className="text-sm text-gray-500">Review your details before submitting.</p>
                             <ul className="list-disc list-inside space-y-2 text-gray-700">
-                                <li><strong>Full Name:</strong> {applicantData.name}</li>
-                                <li><strong>Email Address:</strong> {applicantData.email}</li>
-                                <li><strong>Social Security Number (SSN):</strong> {applicantData.ssn}</li>
                                 <li><strong>First Name:</strong> {formData.firstName}</li>
                                 <li><strong>Last Name:</strong> {formData.lastName}</li>
                                 <li><strong>Social Security Number (SSN):</strong> {formData.ssn}</li>
@@ -596,8 +468,8 @@ export default function IndividualApplicationPage() {
             {/* Header */}
             <section className="bg-navy-700 py-12">
                 <div className="container mx-auto px-4">
-                    <h1 className="text-3xl md:text-4xl font-bold mb-4">Apply for Individual Funding</h1>
-                    <p className="text-xl max-w-3xl">Complete the application form below to apply for the SME Tariff Relief Grant Program as an individual.</p>
+                    <h1 className="text-3xl md:text-4xl font-bold mb-4 text-white">Apply for Individual Funding</h1>
+                    <p className="text-xl max-w-3xl text-blue-100">Complete the application form below to apply for the SME Tariff Relief Grant Program as an individual.</p>
                 </div>
             </section>
             {/* Application Steps */}
@@ -605,7 +477,7 @@ export default function IndividualApplicationPage() {
                 <div className="container mx-auto px-4">
                     <div className="max-w-4xl mx-auto">
                         <div className="flex justify-between">
-                            {['Personal Information', 'Financial Details', 'Documentation', 'Applicant Information', 'Review & Submit'].map((stepName, index) => {
+                            {['Personal Information', 'Financial Details', 'Documentation', 'Review & Submit'].map((stepName, index) => {
                                 const stepNumber = index + 1;
                                 const isActive = step === stepNumber;
                                 const isCompleted = step > stepNumber;
@@ -621,7 +493,7 @@ export default function IndividualApplicationPage() {
                         </div>
                         <div className="relative mt-2">
                             <div className="absolute top-0 left-4 right-4 h-1 bg-gray-200">
-                                <div className="h-full bg-blue-600" style={{ width: `${(step - 1) / 4 * 100}%` }} />
+                                <div className="h-full bg-blue-600" style={{ width: `${(step - 1) / 3 * 100}%` }} />
                             </div>
                         </div>
                     </div>
