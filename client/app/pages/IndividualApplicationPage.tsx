@@ -195,7 +195,7 @@ export default function IndividualApplicationPage() {
                     <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <CheckCircleIcon size={32} className="text-green-600" />
                     </div>
-                    <h2 className="text-2xl font-bold mb-4">Application Submitted Successfully!</h2>
+                    <h2 className="text-2xl font-bold mb-4 text-blue-800">Application Submitted Successfully!</h2>
                     <p className="text-lg mb-6">
                         Thank you for applying to the SME Tariff Relief Program. Your application has been received and will be reviewed by our team.
                     </p>
@@ -208,7 +208,7 @@ export default function IndividualApplicationPage() {
             case 1:
                 return (
                     <>
-                        <h2 className="text-xl font-bold mb-6">Personal Information</h2>
+                        <h2 className="text-xl font-bold mb-6 text-blue-800">Personal Information</h2>
                         <div className="space-y-4">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
@@ -328,7 +328,7 @@ export default function IndividualApplicationPage() {
             case 2:
                 return (
                     <>
-                        <h2 className="text-xl font-bold mb-6">Financial Details</h2>
+                        <h2 className="text-xl font-bold mb-6 text-blue-800">Financial Details</h2>
                         <div className="space-y-4">
                             <div>
                                 <label htmlFor="annualIncome" className="block font-medium mb-1">Annual Income *</label>
@@ -422,7 +422,7 @@ export default function IndividualApplicationPage() {
             case 3:
                 return (
                     <>
-                        <h2 className="text-xl font-bold mb-6">Required Documentation</h2>
+                        <h2 className="text-xl font-bold mb-6 text-blue-800">Required Documentation</h2>
                         <div className="bg-blue-50 p-4 rounded-md mb-6">
                             <div className="flex">
                                 <AlertCircleIcon className="text-blue-600 mr-3 flex-shrink-0" size={20} />
@@ -460,7 +460,7 @@ export default function IndividualApplicationPage() {
             case 4:
                 return (
                     <>
-                        <h2 className="text-xl font-bold mb-6">Applicant Information</h2>
+                        <h2 className="text-xl font-bold mb-6 text-blue-800">Applicant Information</h2>
                         <div className="space-y-4">
                             <div>
                                 <label className="flex items-center">
@@ -550,7 +550,7 @@ export default function IndividualApplicationPage() {
             case 5:
                 return (
                     <>
-                        <h2 className="text-xl font-bold mb-6">Review & Submit Application</h2>
+                        <h2 className="text-xl font-bold mb-6 text-blue-800">Review & Submit Application</h2>
                         <div className="bg-gray-50 p-6 rounded-lg mb-8">
                             <h3 className="font-bold mb-4">Application Summary</h3>
                             <p className="text-sm text-gray-500">Review your details before submitting.</p>
@@ -613,7 +613,7 @@ export default function IndividualApplicationPage() {
                                     <div className={`w-8 h-8 rounded-full flex items-center justify-center ${isActive ? 'bg-blue-600 text-white' : isCompleted ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-500'}`}>
                                         {isCompleted ? <CheckCircleIcon size={16} /> : stepNumber}
                                     </div>
-                                    <div className={`text-xs mt-1 ${isActive ? 'font-medium' : ''} hidden md:block`}>
+                                    <div className={`text-xs mt-1 ${isActive ? 'font-medium' : ''} hidden md:block text-gray-900`}>
                                         {stepName}
                                     </div>
                                 </div>;
@@ -636,7 +636,7 @@ export default function IndividualApplicationPage() {
                             <div className="loader border-t-4 border-blue-500 rounded-full w-12 h-12 animate-spin"></div>
                         </div>}
                         <div className="bg-white p-8 rounded-lg shadow-md">
-                            <form>
+                            <form className="text-gray-900">
                                 {renderStepContent()}
                             </form>
                         </div>
@@ -649,9 +649,9 @@ export default function IndividualApplicationPage() {
                     <div className="max-w-4xl mx-auto">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div>
-                                <h3 className="text-xl font-bold mb-4">Need Help?</h3>
-                                <p className="mb-4">Our support team is available to assist you with your application. Contact us with any questions.</p>
-                                <div className="space-y-2">
+                                <h3 className="text-xl font-bold mb-4 text-blue-800">Need Help?</h3>
+                                <p className="mb-4 text-gray-800">Our support team is available to assist you with your application. Contact us with any questions.</p>
+                                <div className="space-y-2 text-gray-800">
                                     <div className="flex items-center">
                                         <PhoneIcon size={18} className="text-blue-600 mr-2" />
                                         <span>(202) 555-1234</span>
@@ -663,7 +663,7 @@ export default function IndividualApplicationPage() {
                                 </div>
                             </div>
                             <div>
-                                <h3 className="text-xl font-bold mb-4">Application Tips</h3>
+                                <h3 className="text-xl font-bold mb-4 text-blue-800">Application Tips</h3>
                                 <ul className="list-disc list-inside space-y-2 text-gray-700">
                                     <li>Have all required documents ready before starting</li>
                                     <li>Be specific about how tariffs have impacted you</li>
