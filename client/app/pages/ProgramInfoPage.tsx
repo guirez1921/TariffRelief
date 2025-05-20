@@ -24,10 +24,10 @@ export default function ProgramInfoPage() {
       {/* Header */}
       <section className="bg-navy-700 text-white py-12">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 text-white">
             Program Information
           </h1>
-          <p className="text-xl max-w-3xl">
+          <p className="text-xl max-w-3xl text-blue-100">
             Learn about the Tariff Relief Program, eligibility requirements,
             benefits, and repayment terms.
           </p>
@@ -37,8 +37,8 @@ export default function ProgramInfoPage() {
       <section className="py-12 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl">
-            <h2 className="text-2xl font-bold mb-6">Program Overview</h2>
-            <p className="mb-4">
+            <h2 className="text-2xl font-bold mb-6 text-gray-900">Program Overview</h2>
+            <p className="mb-4 text-gray-800">
               The SME Tariff Relief Program is a government-backed initiative
               designed to provide financial support to small and medium-sized
               enterprises (SMEs) and eligible individuals affected by the economic
@@ -46,7 +46,7 @@ export default function ProgramInfoPage() {
               and individuals adapt their operations, diversify supply chains, and
               maintain competitiveness in changing market conditions.
             </p>
-            <p>
+            <p className="text-gray-800">
               Established by the Department of Commerce in partnership with the
               Small Business Administration, this program aims to strengthen
               American businesses and individuals, preserve jobs, and support
@@ -55,7 +55,7 @@ export default function ProgramInfoPage() {
           </div>
         </div>
       </section>
-      {/* SME Adapttion Grants */}
+      {/* SME Adaptation Grants */}
       <section id="business" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row">
@@ -118,7 +118,7 @@ export default function ProgramInfoPage() {
                   </li>
                 </ul>
               </div>
-              <div className="bg-white p-6 rounded-lg shadow-sm x">
+              <div className="bg-white p-6 rounded-lg shadow-sm">
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">
                   Approved Use of Funding
                 </h3>
@@ -358,7 +358,7 @@ export default function ProgramInfoPage() {
                       Education & Training
                     </h4>
                   </div>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-gray-700 text-sm">
                     Funding for vocational training, certifications, or degree
                     programs in high-demand fields
                   </p>
@@ -372,7 +372,7 @@ export default function ProgramInfoPage() {
                       Career Development
                     </h4>
                   </div>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-gray-700 text-sm">
                     Resume building, interview coaching, and job placement
                     assistance
                   </p>
@@ -386,7 +386,7 @@ export default function ProgramInfoPage() {
                       Business Startup
                     </h4>
                   </div>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-gray-700 text-sm">
                     Support for entrepreneurs starting small businesses in growing
                     sectors
                   </p>
@@ -400,7 +400,7 @@ export default function ProgramInfoPage() {
                       Financial Counseling
                     </h4>
                   </div>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-gray-700 text-sm">
                     Professional guidance on financial planning during career
                     transitions
                   </p>
@@ -416,36 +416,12 @@ export default function ProgramInfoPage() {
           </div>
         </div>
       </section>
-      {/* Eligibility */}
-      {/* <section className="py-12 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-6">Eligibility Requirements</h2>
-          <div className="bg-white p-6 rounded-lg shadow-sm mb-8">
-            <h3 className="text-xl font-bold mb-4">Basic Eligibility</h3>
-            <ul className="space-y-3">
-              {['U.S.-based SME or individual affected by tariffs', 'In operation for at least 2 years (for businesses)', 'Demonstrable impact from Chinese tariffs on operations', 'Good standing with federal, state, and local tax authorities', 'Valid registration and licenses', 'No delinquent federal debt or defaults on government loans'].map((item, index) => <li key={index} className="flex items-start">
-                <CheckCircleIcon className="text-green-600 mr-2 mt-1 flex-shrink-0" size={20} />
-                <span>{item}</span>
-              </li>)}
-            </ul>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h3 className="text-xl font-bold mb-4">Documentation Required</h3>
-            <ul className="space-y-3">
-              {['Tax returns for the past 2 years (business or personal)', 'Financial statements (balance sheet, profit & loss statement)', 'Proof of tariff impact (e.g., import records, supplier documentation)', 'Plan detailing use of funds', 'Personal financial statements for all owners with 20% or greater ownership (for businesses)', 'Valid licenses and registrations'].map((item, index) => <li key={index} className="flex items-start">
-                <ArrowRightIcon className="text-blue-600 mr-2 mt-1 flex-shrink-0" size={20} />
-                <span>{item}</span>
-              </li>)}
-            </ul>
-          </div>
-        </div>
-      </section> */}
       {/* Benefits & Terms */}
       <section className="py-12 bg-white">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <h2 className="text-2xl font-bold mb-6">Program Benefits</h2>
+              <h2 className="text-2xl font-bold mb-6 text-gray-900">Program Benefits</h2>
               <div className="bg-gray-50 p-6 rounded-lg shadow-sm md:h-full">
                 <ul className="space-y-4">
                   {[
@@ -462,40 +438,34 @@ export default function ProgramInfoPage() {
                         className="text-green-600 mr-2 mt-1 flex-shrink-0"
                         size={20}
                       />
-                      <span>{item}</span>
+                      <span className="text-gray-800">{item}</span>
                     </li>
                   ))}
                 </ul>
               </div>
             </div>
             <div>
-              <h2 className="text-2xl font-bold mb-6">Grant Disbursement and Compliance</h2>
+              <h2 className="text-2xl font-bold mb-6 text-gray-900">Grant Disbursement and Compliance</h2>
               <div className="bg-gray-50 p-6 rounded-lg shadow-sm md:h-full">
                 <div className="space-y-4">
                   <div>
-                    <h3 className="font-bold text-lg mb-2">Interest Rates</h3>
-                    <p>
+                    <h3 className="font-bold text-lg mb-2 text-gray-900">Interest Rates</h3>
+                    <p className="text-gray-800">
                       Grants do not require repayment for eligible SMEs and individuals. Terms and
                       conditions apply for proper use of funds.
                     </p>
                   </div>
-                  {/* <div>
-            <h3 className="font-bold text-lg mb-2">Loan Term</h3>
-            <p>
-              5-15 years based on needs and ability to repay, if applicable.
-            </p>
-          </div> */}
                   <div>
-                    <h3 className="font-bold text-lg mb-2">Payment Schedule</h3>
-                    <p>
+                    <h3 className="font-bold text-lg mb-2 text-gray-900">Payment Schedule</h3>
+                    <p className="text-gray-800">
                       Payment schedules vary based on grant type: individuals receive weekly payments, SMEs with grants under $350,000 follow a monthly schedule, and customized terms are arranged for grants exceeding $350,000.
                     </p>
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg mb-2">
+                    <h3 className="font-bold text-lg mb-2 text-gray-900">
                       Collateral Requirements
                     </h3>
-                    <p>
+                    <p className="text-gray-800">
                       Grants over $350,000 may require additional documentation to ensure
                       compliance with program guidelines.
                     </p>
@@ -506,36 +476,6 @@ export default function ProgramInfoPage() {
           </div>
         </div>
       </section>
-      {/* Use of Funds */}
-      {/* <section className="py-12 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-6">Approved Use of Funds</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-bold mb-4 text-green-700">
-                Approved Uses
-              </h3>
-              <ul className="space-y-3">
-                {['Supply chain diversification', 'Equipment purchases to reduce reliance on affected imports', 'Facility modifications to accommodate new production processes', 'Working capital to offset increased costs due to tariffs', 'Technology upgrades to improve efficiency', 'Staff training for new processes or equipment', 'Research and development for product alternatives'].map((item, index) => <li key={index} className="flex items-start">
-                  <CheckCircleIcon className="text-green-600 mr-2 mt-1 flex-shrink-0" size={20} />
-                  <span>{item}</span>
-                </li>)}
-              </ul>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-bold mb-4 text-red-700">
-                Prohibited Uses
-              </h3>
-              <ul className="space-y-3">
-                {['Payment of existing debts', 'Dividends or distributions to owners', 'Personal expenses', 'Speculative activities', 'Lobbying activities', 'Relocation of business outside the U.S.', 'Purchase of real estate for investment purposes'].map((item, index) => <li key={index} className="flex items-start">
-                  <AlertCircleIcon className="text-red-600 mr-2 mt-1 flex-shrink-0" size={20} />
-                  <span>{item}</span>
-                </li>)}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section> */}
       {/* Application Portal */}
       <section id="apply" className="py-16 bg-white">
         <div className="container mx-auto px-4">
@@ -543,7 +483,7 @@ export default function ProgramInfoPage() {
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
               Application Portals
             </h2>
-            <p className="text-gray-600 max-w-3xl mx-auto">
+            <p className="text-gray-700 max-w-3xl mx-auto">
               Select the appropriate portal below to begin your grant application
               process. Applications are processed on a rolling basis with
               decisions typically made within 30 days.
@@ -554,11 +494,11 @@ export default function ProgramInfoPage() {
               <div className="bg-blue-700 p-6 text-white">
                 <div className="flex items-center mb-4">
                   <BuildingIcon size={24} />
-                  <h3 className="text-xl font-bold ml-2">
+                  <h3 className="text-xl font-bold ml-2 text-white">
                     Business Grant Portal
                   </h3>
                 </div>
-                <p>
+                <p className="text-blue-100">
                   For small and medium-sized enterprises affected by Chinese
                   tariffs
                 </p>
@@ -628,7 +568,7 @@ export default function ProgramInfoPage() {
                     size={18}
                     className="text-amber-500 mr-2 flex-shrink-0"
                   />
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-700">
                     You can save your progress and return later
                   </span>
                 </div>
@@ -645,11 +585,11 @@ export default function ProgramInfoPage() {
               <div className="bg-blue-600 p-6 text-white">
                 <div className="flex items-center mb-4">
                   <UserIcon size={24} />
-                  <h3 className="text-xl font-bold ml-2">
+                  <h3 className="text-xl font-bold ml-2 text-white">
                     Individual Grant Portal
                   </h3>
                 </div>
-                <p>
+                <p className="text-blue-100">
                   For U.S. citizens and permanent residents affected by
                   tariff-related changes
                 </p>
@@ -711,7 +651,7 @@ export default function ProgramInfoPage() {
                     size={18}
                     className="text-amber-500 mr-2 flex-shrink-0"
                   />
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-700">
                     You can save your progress and return later
                   </span>
                 </div>
@@ -740,26 +680,6 @@ export default function ProgramInfoPage() {
           </div>
         </div>
       </section>
-      {/* CTA */}
-      {/* <section className="py-12 bg-blue-800 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">
-            Ready to Apply?
-          </h2>
-          <p className="text-lg mb-6 max-w-2xl mx-auto">
-            If your business meets the eligibility requirements, start your
-            application today to access the grant funding you need.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button href="/application/individual" size="lg" variant="secondary">
-              Start Application
-            </Button>
-            <Button href="/calculator" size="lg" variant="ghost">
-              Calculate Your Grant
-            </Button>
-          </div>
-        </div>
-      </section> */}
     </div>
   );
 };

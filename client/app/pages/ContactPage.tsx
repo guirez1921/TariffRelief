@@ -60,10 +60,9 @@ export default function ContactPage() {
       {/* Header */}
       <section className="bg-navy-700 text-white py-12">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">Contact Us</h1>
-          <p className="text-xl max-w-3xl">
-            Get in touch with our team for assistance with the SME Tariff Relief
-            Program.
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 text-white">Contact Us</h1>
+          <p className="text-xl max-w-3xl text-blue-100">
+            Get in touch with our team for assistance with the SME Tariff Relief Program.
           </p>
         </div>
       </section>
@@ -73,7 +72,7 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Contact Form */}
             <div className="lg:col-span-2">
-              <h2 className="text-2xl font-bold mb-6">Send Us a Message</h2>
+              <h2 className="text-2xl font-bold mb-6 text-blue-900">Send Us a Message</h2>
               {formStatus === 'success' ? <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded-md">
                 <div className="flex">
                   <CheckCircleIcon className="text-green-500 mr-3 flex-shrink-0" size={24} />
@@ -94,13 +93,13 @@ export default function ContactPage() {
               </div> : <form onSubmit={handleSubmit} className="bg-gray-50 p-6 rounded-lg shadow-sm">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   <div>
-                    <label htmlFor="name" className="block font-medium mb-2">
+                    <label htmlFor="name" className="block font-medium mb-2 text-gray-900">
                       Full Name *
                     </label>
                     <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block font-medium mb-2">
+                    <label htmlFor="email" className="block font-medium mb-2 text-gray-900">
                       Email Address *
                     </label>
                     <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
@@ -108,20 +107,20 @@ export default function ContactPage() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   <div>
-                    <label htmlFor="phone" className="block font-medium mb-2">
+                    <label htmlFor="phone" className="block font-medium mb-2 text-gray-900">
                       Phone Number
                     </label>
                     <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   </div>
                   <div>
-                    <label htmlFor="businessName" className="block font-medium mb-2">
+                    <label htmlFor="businessName" className="block font-medium mb-2 text-gray-900">
                       Business Name *
                     </label>
                     <input type="text" id="businessName" name="businessName" value={formData.businessName} onChange={handleChange} required className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   </div>
                 </div>
                 <div className="mb-6">
-                  <label htmlFor="subject" className="block font-medium mb-2">
+                  <label htmlFor="subject" className="block font-medium mb-2 text-gray-900">
                     Subject *
                   </label>
                   <select id="subject" name="subject" value={formData.subject} onChange={handleChange} required className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -143,7 +142,7 @@ export default function ContactPage() {
                   </select>
                 </div>
                 <div className="mb-6">
-                  <label htmlFor="message" className="block font-medium mb-2">
+                  <label htmlFor="message" className="block font-medium mb-2 text-gray-900">
                     Message *
                   </label>
                   <textarea id="message" name="message" value={formData.message} onChange={handleChange} required rows={5} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
@@ -155,12 +154,12 @@ export default function ContactPage() {
             </div>
             {/* Contact Information */}
             <div>
-              <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
+              <h2 className="text-2xl font-bold mb-6 text-blue-900">Contact Information</h2>
               <div className="bg-gray-50 p-6 rounded-lg shadow-sm mb-6">
-                <h3 className="font-bold text-lg mb-4">
+                <h3 className="font-bold text-lg mb-4 text-gray-900">
                   SME Tariff Relief Program Office
                 </h3>
-                <div className="space-y-4">
+                <div className="space-y-4 text-gray-800">
                   <div className="flex">
                     <MapPinIcon size={20} className="text-blue-800 mr-3 flex-shrink-0" />
                     <div>
@@ -196,25 +195,25 @@ export default function ContactPage() {
                 </div>
               </div>
               <div className="bg-blue-50 p-6 rounded-lg shadow-sm">
-                <h3 className="font-bold text-lg mb-4">Regional Offices</h3>
-                <div className="space-y-6">
+                <h3 className="font-bold text-lg mb-4 text-gray-900">Regional Offices</h3>
+                <div className="space-y-6 text-gray-800">
                   <div>
-                    <h4 className="font-medium">Northeast Region</h4>
+                    <h4 className="font-medium text-gray-900">Northeast Region</h4>
                     <p className="text-sm">New York, NY</p>
                     <p className="text-sm">(212) 555-4321</p>
                   </div>
                   <div>
-                    <h4 className="font-medium">Southeast Region</h4>
+                    <h4 className="font-medium text-gray-900">Southeast Region</h4>
                     <p className="text-sm">Atlanta, GA</p>
                     <p className="text-sm">(404) 555-7890</p>
                   </div>
                   <div>
-                    <h4 className="font-medium">Midwest Region</h4>
+                    <h4 className="font-medium text-gray-900">Midwest Region</h4>
                     <p className="text-sm">Chicago, IL</p>
                     <p className="text-sm">(312) 555-6543</p>
                   </div>
                   <div>
-                    <h4 className="font-medium">West Region</h4>
+                    <h4 className="font-medium text-gray-900">West Region</h4>
                     <p className="text-sm">San Francisco, CA</p>
                     <p className="text-sm">(415) 555-9087</p>
                   </div>
@@ -227,7 +226,7 @@ export default function ContactPage() {
       {/* Map Section */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-6 text-center">Our Location</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center text-blue-900">Our Location</h2>
           <div className="max-w-5xl mx-auto">
             <div className="aspect-w-16 aspect-h-9">
               <img src="https://placehold.co/1200x600/e2e8f0/64748b?text=Map+Location" alt="Map showing the location of the SME Tariff Relief Program Office" className="w-full h-auto rounded-lg shadow-md" />

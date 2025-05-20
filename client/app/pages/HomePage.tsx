@@ -22,14 +22,14 @@ export default function HomePage() {
   return (
     <div className="w-full">
       {/* Hero Section */}
-      <section className="bg-navy-700 text-white py-16 md:py-24">
+      <section className="bg-navy-700 py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-white">
                 Preparing America for Economic Change
               </h1>
-              <p className="text-xl mb-8">
+              <p className="text-xl mb-8 text-gray-300">
                 Federal grants to help businesses and individuals adapt to the economic impact of upcoming Chinese tariffs.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -54,7 +54,7 @@ export default function HomePage() {
       {/* Key Features Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-blue-900">
             Key Features of Tariff Relief for SMEs and Individuals
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -62,7 +62,7 @@ export default function HomePage() {
               <div className="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                 <FileTextIcon className="text-blue-800" size={24} />
               </div>
-              <h3 className="text-xl font-bold mb-3">Financial Support</h3>
+              <h3 className="text-xl font-bold mb-3 text-blue-900">Financial Support</h3>
               <p className="text-gray-700">
                 Access grants designed to offset the financial impact of Chinese tariffs on small and medium enterprises.
               </p>
@@ -71,7 +71,7 @@ export default function HomePage() {
               <div className="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                 <CalculatorIcon className="text-blue-800" size={24} />
               </div>
-              <h3 className="text-xl font-bold mb-3">Simplified Application</h3>
+              <h3 className="text-xl font-bold mb-3 text-blue-900">Simplified Application</h3>
               <p className="text-gray-700">
                 Benefit from a streamlined application process with quick approvals for eligible businesses and individuals.
               </p>
@@ -80,7 +80,7 @@ export default function HomePage() {
               <div className="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                 <HelpCircleIcon className="text-blue-800" size={24} />
               </div>
-              <h3 className="text-xl font-bold mb-3">Expert Assistance</h3>
+              <h3 className="text-xl font-bold mb-3 text-blue-900">Expert Assistance</h3>
               <p className="text-gray-700">
                 Receive guidance from specialists to effectively utilize funds and adapt to tariff-related challenges.
               </p>
@@ -93,24 +93,24 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold mb-6 text-blue-900">
                 Are You Eligible for Tariff Relief?
               </h2>
-              <p className="text-lg mb-6">
+              <p className="text-lg mb-6 text-gray-800">
                 The Tariff Relief Program supports both businesses and individuals impacted by Chinese tariffs. Check the eligibility criteria below:
               </p>
-              <h3 className="text-xl font-bold mb-4">For Businesses:</h3>
+              <h3 className="text-xl font-bold mb-4 text-blue-900">For Businesses:</h3>
               <ul className="space-y-3 mb-6">
                 {['U.S.-based small or medium enterprise (fewer than 200 employees)', 'Demonstrable impact from Chinese tariffs on business operations', 'Minimum 2 years in business with positive revenue growth', 'Clear plan for utilizing funds to adapt to tariff changes', 'Good standing with federal, state, and local tax authorities'].map((item, index) => <li key={index} className="flex items-start">
                   <CheckCircleIcon className="text-green-600 mr-2 mt-1 flex-shrink-0" size={20} />
-                  <span>{item}</span>
+                  <span className="text-gray-800">{item}</span>
                 </li>)}
               </ul>
-              <h3 className="text-xl font-bold mb-4">For Individuals:</h3>
+              <h3 className="text-xl font-bold mb-4 text-blue-900">For Individuals:</h3>
               <ul className="space-y-3">
                 {['U.S. citizen or permanent resident', 'Demonstrable financial hardship due to tariff-related economic changes', 'Clear plan for utilizing funds to improve financial stability', 'Good standing with federal, state, and local tax authorities'].map((item, index) => <li key={index} className="flex items-start">
                   <CheckCircleIcon className="text-green-600 mr-2 mt-1 flex-shrink-0" size={20} />
-                  <span>{item}</span>
+                  <span className="text-gray-800">{item}</span>
                 </li>)}
               </ul>
               <div className="mt-8">
@@ -128,10 +128,10 @@ export default function HomePage() {
       {/* CTA Section */}
       <section className="py-16 bg-blue-800 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">
         Ready to Apply for Federal Grants?
           </h2>
-          <p className="text-lg mb-8 max-w-2xl mx-auto">
+          <p className="text-lg mb-8 max-w-2xl mx-auto text-white">
         Our streamlined application process makes it easy to secure the funding
         your business or individual needs to grow and succeed.
           </p>
@@ -149,7 +149,7 @@ export default function HomePage() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold">Latest Grant Updates</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-blue-900">Latest Grant Updates</h2>
             <Button href="/news" variant="outline">
               View All Updates
             </Button>
@@ -169,8 +169,8 @@ export default function HomePage() {
               excerpt: 'Read how three American businesses successfully expanded their operations with federal grant funding.'
             }].map((news, index) => <div key={index} className="bg-gray-50 p-6 rounded-lg shadow-sm">
               <p className="text-sm text-gray-500 mb-2">{news.date}</p>
-              <h3 className="text-xl font-bold mb-3">{news.title}</h3>
-              <p className="text-gray-700 mb-4">{news.excerpt}</p>
+              <h3 className="text-xl font-bold mb-3 text-blue-900">{news.title}</h3>
+              <p className="text-gray-800 mb-4">{news.excerpt}</p>
               <Button href={`/news/${index}`} variant="outline" size="sm">
                 Read More
               </Button>

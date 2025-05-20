@@ -71,12 +71,11 @@ export default function FAQPage() {
       {/* Header */}
       <section className="bg-navy-700 text-white py-12">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 text-white">
             Frequently Asked Questions
           </h1>
-          <p className="text-xl max-w-3xl">
-            Find answers to common questions about the SME Tariff Relief
-            Program.
+          <p className="text-xl max-w-3xl text-blue-100">
+            Find answers to common questions about the SME Tariff Relief Program.
           </p>
         </div>
       </section>
@@ -87,7 +86,7 @@ export default function FAQPage() {
             {/* Search */}
             <div className="mb-8">
               <div className="relative">
-                <input type="text" placeholder="Search for questions..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-12 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <input type="text" placeholder="Search for questions..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-12 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900" />
                 <SearchIcon className="absolute left-4 top-3.5 text-gray-400" size={20} />
               </div>
             </div>
@@ -95,13 +94,13 @@ export default function FAQPage() {
             <div className="space-y-4">
               {filteredFAQs.length > 0 ? filteredFAQs.map((faq, index) => <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
                 <button className="w-full text-left px-6 py-4 flex justify-between items-center bg-gray-50 hover:bg-gray-100 focus:outline-none" onClick={() => toggleFAQ(index)} aria-expanded={openIndex === index}>
-                  <span className="font-medium text-lg">
+                  <span className="font-medium text-lg text-blue-900">
                     {faq.question}
                   </span>
                   {openIndex === index ? <ChevronUpIcon size={20} className="flex-shrink-0 text-blue-600" /> : <ChevronDownIcon size={20} className="flex-shrink-0 text-gray-500" />}
                 </button>
                 {openIndex === index && <div className="px-6 py-4 bg-white">
-                  <p className="text-gray-700">{faq.answer}</p>
+                  <p className="text-gray-800">{faq.answer}</p>
                 </div>}
               </div>) : <div className="text-center py-8">
                 <p className="text-gray-500">
@@ -114,10 +113,9 @@ export default function FAQPage() {
             </div>
             {/* Still have questions */}
             <div className="mt-12 bg-blue-50 rounded-lg p-6 text-center">
-              <h3 className="text-xl font-bold mb-2">Still Have Questions?</h3>
-              <p className="mb-4">
-                Contact our support team for assistance with any questions about
-                the SME Tariff Relief Program.
+              <h3 className="text-xl font-bold mb-2 text-blue-900">Still Have Questions?</h3>
+              <p className="mb-4 text-gray-800">
+                Contact our support team for assistance with any questions about the SME Tariff Relief Program.
               </p>
               <Button href="/contact" variant="primary">
                 Contact Support
@@ -129,34 +127,32 @@ export default function FAQPage() {
       {/* Related Resources */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-8 text-center">
+          <h2 className="text-2xl font-bold mb-8 text-center text-blue-900">
             Related Resources
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-bold mb-3">Program Guidelines</h3>
-              <p className="mb-4">
-                Detailed information about eligibility requirements, grant tenure,
-                and application procedures.
+              <h3 className="text-xl font-bold mb-3 text-blue-900">Program Guidelines</h3>
+              <p className="mb-4 text-gray-800">
+                Detailed information about eligibility requirements, grant tenure, and application procedures.
               </p>
               <Button href="/program-information" variant="outline" size="sm">
                 View Guidelines
               </Button>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-bold mb-3">Grant Estimation</h3>
-                <p className="mb-4">
+              <h3 className="text-xl font-bold mb-3 text-blue-900">Grant Estimation</h3>
+              <p className="mb-4 text-gray-800">
                 Calculate your projected monthly installments and overall grant expenses using our dynamic estimator tool.
-                </p>
-                <Button href="/estimate" variant="outline" size="sm">
+              </p>
+              <Button href="/estimate" variant="outline" size="sm">
                 Access Estimator
-                </Button>
+              </Button>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-bold mb-3">Application Process</h3>
-              <p className="mb-4">
-                Step-by-step guide to completing your loan application
-                successfully.
+              <h3 className="text-xl font-bold mb-3 text-blue-900">Application Process</h3>
+              <p className="mb-4 text-gray-800">
+                Step-by-step guide to completing your loan application successfully.
               </p>
               <Button href="/application/business" variant="outline" size="sm">
                 Start Application

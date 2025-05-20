@@ -85,10 +85,10 @@ export default function CalculatorPage() {
             <div className="inline-flex items-center justify-center bg-blue-100 text-blue-800 p-2 rounded-full mb-4">
               <CalculatorIcon size={24} />
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl font-bold text-blue-900 mb-4">
               Grant Calculator
             </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <p className="text-gray-800 max-w-2xl mx-auto">
               Estimate the potential grant amount you may be eligible for based
               on your specific situation. This is only an estimate and actual
               grant amounts may vary.
@@ -96,7 +96,7 @@ export default function CalculatorPage() {
           </div>
           <div className="bg-white p-6 md:p-8 rounded-lg shadow-sm">
             <div className="mb-6">
-              <label className="block text-gray-700 font-medium mb-3">
+              <label className="block text-gray-900 font-medium mb-3">
                 I am applying as a:
               </label>
               <div className="grid grid-cols-2 gap-4">
@@ -131,10 +131,10 @@ export default function CalculatorPage() {
             {applicantType === 'business' ? (
               <>
                 <div className="mb-6 bg-gray-100 p-4 rounded-md">
-                  <h3 className="text-lg font-bold text-gray-800 mb-2">
+                  <h3 className="text-lg font-bold text-blue-900 mb-2">
                     Business Eligibility Criteria
                   </h3>
-                  <ul className="list-disc list-inside text-gray-700">
+                  <ul className="list-disc list-inside text-gray-800">
                     <li>Must be a registered business entity.</li>
                     <li>Must have between 1 and 199 employees.</li>
                     <li>Must demonstrate tariff exposure and industry impact.</li>
@@ -142,11 +142,11 @@ export default function CalculatorPage() {
                 </div>
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-gray-700 font-medium mb-2">
+                    <label className="block text-gray-900 font-medium mb-2">
                       Business Size
                     </label>
                     <select
-                      className="w-full p-3 border border-gray-300 rounded-md"
+                      className="w-full p-3 border border-gray-300 rounded-md text-gray-800"
                       value={businessSize || ""}
                       onChange={(e) => {
                         setBusinessSize(e.target.value);
@@ -160,11 +160,11 @@ export default function CalculatorPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-gray-700 font-medium mb-2">
+                    <label className="block text-gray-900 font-medium mb-2">
                       Industry Impact Level
                     </label>
                     <select
-                      className="w-full p-3 border border-gray-300 rounded-md"
+                      className="w-full p-3 border border-gray-300 rounded-md text-gray-800"
                       value={industryImpact || ""}
                       onChange={(e) => {
                         setIndustryImpact(e.target.value);
@@ -178,11 +178,11 @@ export default function CalculatorPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-gray-700 font-medium mb-2">
+                    <label className="block text-gray-900 font-medium mb-2">
                       Tariff Exposure
                     </label>
                     <select
-                      className="w-full p-3 border border-gray-300 rounded-md"
+                      className="w-full p-3 border border-gray-300 rounded-md text-gray-800"
                       value={tariffExposure || ""}
                       onChange={(e) => {
                         setTariffExposure(e.target.value);
@@ -203,13 +203,13 @@ export default function CalculatorPage() {
                   </div>
                 </div>
               </>
-            ) : (
+            ) : applicantType === 'individual' ? (
               <>
                 <div className="mb-6 bg-gray-100 p-4 rounded-md">
-                  <h3 className="text-lg font-bold text-gray-800 mb-2">
+                  <h3 className="text-lg font-bold text-blue-900 mb-2">
                     Individual Eligibility Criteria
                   </h3>
-                  <ul className="list-disc list-inside text-gray-700">
+                  <ul className="list-disc list-inside text-gray-800">
                     <li>Must be a U.S. citizen or permanent resident.</li>
                     <li>Must demonstrate financial need or purpose alignment.</li>
                     <li>Must provide accurate household income details.</li>
@@ -217,11 +217,11 @@ export default function CalculatorPage() {
                 </div>
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-gray-700 font-medium mb-2">
+                    <label className="block text-gray-900 font-medium mb-2">
                       Household Income Level
                     </label>
                     <select
-                      className="w-full p-3 border border-gray-300 rounded-md"
+                      className="w-full p-3 border border-gray-300 rounded-md text-gray-800"
                       value={individualIncome || ""}
                       onChange={(e) => {
                         setIndividualIncome(e.target.value);
@@ -241,11 +241,11 @@ export default function CalculatorPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-gray-700 font-medium mb-2">
+                    <label className="block text-gray-900 font-medium mb-2">
                       Primary Grant Purpose
                     </label>
                     <select
-                      className="w-full p-3 border border-gray-300 rounded-md"
+                      className="w-full p-3 border border-gray-300 rounded-md text-gray-800"
                       value={individualPurpose || ""}
                       onChange={(e) => {
                         setIndividualPurpose(e.target.value);
@@ -261,24 +261,25 @@ export default function CalculatorPage() {
                   </div>
                 </div>
               </>
-            )}
+            ) : null}
             <div className="mt-8">
               <button
                 className="w-full bg-blue-700 text-white py-3 px-4 rounded-md font-medium hover:bg-blue-800 transition-colors"
                 onClick={handleCalculate}
+                type="button"
               >
                 Calculate Estimated Grant
               </button>
             </div>
             {showResult && (
               <div className="mt-8 bg-blue-50 p-6 rounded-lg border border-blue-200">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                <h3 className="text-xl font-bold text-blue-900 mb-2">
                   Estimated Grant Amount
                 </h3>
                 <div className="text-3xl font-bold text-blue-700">
                   ${grantAmount?.toLocaleString()}
                 </div>
-                <p className="text-gray-600 mt-3 text-sm">
+                <p className="text-gray-800 mt-3 text-sm">
                   This is an estimate based on the information provided. Actual
                   grant amounts may vary based on final eligibility
                   determination, available funding, and specific program

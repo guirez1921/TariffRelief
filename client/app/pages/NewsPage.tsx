@@ -67,10 +67,10 @@ export default function NewsPage() {
       {/* Header */}
       <section className="bg-navy-700 text-white py-12">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 text-white">
             News & Updates
           </h1>
-          <p className="text-xl max-w-3xl">
+          <p className="text-xl max-w-3xl text-blue-100">
             Stay informed about the latest developments in the SME Tariff Relief
             Program and related economic measures.
           </p>
@@ -85,11 +85,11 @@ export default function NewsPage() {
                 <CalendarIcon size={16} className="mr-2" />
                 {newsArticles[0].date}
               </div>
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">
+              <h2 className="text-2xl md:text-3xl font-bold mb-4 text-blue-900">
                 {newsArticles[0].title}
               </h2>
-              <p className="text-lg mb-6">{newsArticles[0].excerpt}</p>
-              <p className="mb-6">
+              <p className="text-lg mb-6 text-gray-800">{newsArticles[0].excerpt}</p>
+              <p className="mb-6 text-gray-700">
                 {newsArticles[0].content.substring(0, 200)}...
               </p>
               <Button href={`/news/${newsArticles[0].id}`} variant="primary">
@@ -105,7 +105,7 @@ export default function NewsPage() {
       {/* Recent News */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-8">Recent Updates</h2>
+          <h2 className="text-2xl font-bold mb-8 text-blue-900">Recent Updates</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {newsArticles.slice(1, 4).map(article => <div key={article.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
               <img src={article.image} alt={article.title} className="w-full h-48 object-cover" />
@@ -114,8 +114,8 @@ export default function NewsPage() {
                   <CalendarIcon size={14} className="mr-2" />
                   {article.date}
                 </div>
-                <h3 className="text-xl font-bold mb-3">{article.title}</h3>
-                <p className="text-gray-700 mb-4">{article.excerpt}</p>
+                <h3 className="text-xl font-bold mb-3 text-blue-900">{article.title}</h3>
+                <p className="text-gray-800 mb-4">{article.excerpt}</p>
                 <Button href={`/news/${article.id}`} variant="outline" size="sm">
                   Read More
                 </Button>
@@ -127,7 +127,7 @@ export default function NewsPage() {
       {/* News Archive */}
       <section className="py-12 bg-white">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-8">News Archive</h2>
+          <h2 className="text-2xl font-bold mb-8 text-blue-900">News Archive</h2>
           <div className="space-y-6">
             {newsArticles.slice(4).map(article => <div key={article.id} className="border-b border-gray-200 pb-6 last:border-b-0 last:pb-0">
               <div className="flex flex-col md:flex-row gap-6">
@@ -139,8 +139,8 @@ export default function NewsPage() {
                     <CalendarIcon size={14} className="mr-2" />
                     {article.date}
                   </div>
-                  <h3 className="text-xl font-bold mb-3">{article.title}</h3>
-                  <p className="text-gray-700 mb-4">{article.excerpt}</p>
+                  <h3 className="text-xl font-bold mb-3 text-blue-900">{article.title}</h3>
+                  <p className="text-gray-800 mb-4">{article.excerpt}</p>
                   <Button href={`/news/${article.id}`} variant="outline" size="sm">
                     Read Full Article
                   </Button>
@@ -153,14 +153,14 @@ export default function NewsPage() {
       {/* Resources */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-8">Related Resources</h2>
+          <h2 className="text-2xl font-bold mb-8 text-blue-900">Related Resources</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <div className="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                 <FileTextIcon className="text-blue-800" size={24} />
               </div>
-              <h3 className="text-xl font-bold mb-3">Tariff Impact Reports</h3>
-              <p className="text-gray-700 mb-4">
+              <h3 className="text-xl font-bold mb-3 text-blue-900">Tariff Impact Reports</h3>
+              <p className="text-gray-800 mb-4">
                 Access detailed reports analyzing the economic impact of Chinese
                 tariffs on various industry sectors.
               </p>
@@ -172,8 +172,8 @@ export default function NewsPage() {
               <div className="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                 <FileTextIcon className="text-blue-800" size={24} />
               </div>
-              <h3 className="text-xl font-bold mb-3">Policy Updates</h3>
-              <p className="text-gray-700 mb-4">
+              <h3 className="text-xl font-bold mb-3 text-blue-900">Policy Updates</h3>
+              <p className="text-gray-800 mb-4">
                 Stay informed about the latest policy changes and government
                 actions related to international trade.
               </p>
@@ -185,8 +185,8 @@ export default function NewsPage() {
               <div className="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                 <FileTextIcon className="text-blue-800" size={24} />
               </div>
-              <h3 className="text-xl font-bold mb-3">Business Guides</h3>
-              <p className="text-gray-700 mb-4">
+              <h3 className="text-xl font-bold mb-3 text-blue-900">Business Guides</h3>
+              <p className="text-gray-800 mb-4">
                 Practical guides to help your business navigate tariff
                 challenges and identify growth opportunities.
               </p>
@@ -200,8 +200,8 @@ export default function NewsPage() {
       {/* Newsletter Signup */}
       <section className="py-12 bg-blue-800 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">Stay Informed</h2>
-          <p className="text-lg mb-8 max-w-2xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">Stay Informed</h2>
+          <p className="text-lg mb-8 max-w-2xl mx-auto text-blue-100">
             Subscribe to our newsletter to receive the latest updates on the SME
             Tariff Relief Program, policy changes, and resources.
           </p>

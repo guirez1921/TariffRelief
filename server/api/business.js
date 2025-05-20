@@ -16,6 +16,7 @@ router.use(fileUpload());
 router.post('/verify', async (req, res) => {
     try {
         const { step } = req.body;
+        const { applicationId } = req.body; // Get applicationId from query parameters
         const data = req.body;
         const files = req.files || {};
 
